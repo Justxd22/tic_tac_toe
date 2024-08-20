@@ -1,4 +1,4 @@
-# TIK TAK TOE
+# TIC TAC TOE
 - LOGO
 # Live
 - LIVE URL
