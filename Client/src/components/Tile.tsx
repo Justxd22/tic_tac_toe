@@ -10,7 +10,7 @@ interface TileProps {
 const Tile: FC<TileProps> = ({ className, value, onClick, playerTurn }) => {
   let hoverClass: string | null = null;
   if (value == null && playerTurn != null) {
-    hoverClass = `${playerTurn ? 'true' : 'false'}-hover`; // Example for handling boolean
+    hoverClass = `${playerTurn === 'X' ? 'x' : 'o'}-hover`; // Example for handling boolean
   }
   return (
     <div onClick={onClick} className={`tile ${className} ${hoverClass}`}>
