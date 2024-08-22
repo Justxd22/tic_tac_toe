@@ -3,8 +3,8 @@ import Board from "./Board";
 import GameOver from "./GameOver";
 import GameState from "./GameState";
 import Reset from "./Reset";
-import gameOverSoundAsset from "../sounds/game_over.wav";
-import clickSoundAsset from "../sounds/click.wav";
+import gameOverSoundAsset from "../../assets/sounds/game_over.wav";
+import clickSoundAsset from "../../assets/sounds/click.wav";
 
 const gameOverSound = new Audio(gameOverSoundAsset);
 gameOverSound.volume = 0.2;
