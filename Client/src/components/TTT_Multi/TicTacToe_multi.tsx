@@ -11,8 +11,6 @@ import {
 } from "./constants";
 import Board from "./Board";
 import { getRandomInt, switchPlayer } from "./utils";
-import { minimax } from "./minimax";
-import { ResultModal } from "./ResultModal";
 import { border } from "./styles";
 
 const arr = new Array(DIMENSIONS ** 2).fill(null);
@@ -21,7 +19,7 @@ const board = new Board();
 interface Props {
   squares?: Array<number | null>;
 }
-const TicTacToe_ai = ({ squares = arr }: Props) => {
+const TicTacToe = ({ squares = arr }: Props) => {
   const [players, setPlayers] = useState<Record<string, number | null>>({
     human: null,
     ai: null,
@@ -82,64 +80,7 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
     [gameState]
   );
 
-  /**
-   * Make the AI move. If it's the first move (board is empty),
-   * make move at any random cell to skip unnecessary minimax calculations
-   */
-  const aiMove = useCallback(() => {
-    // Important to pass a copy of the grid here
-    const board = new Board(grid.concat());
-    const emptyIndices = board.getEmptySquares(grid);
-    let index;
-    switch (mode) {
-      case GAME_MODES.easy:
-        do {
-          index = getRandomInt(0, 8);
-        } while (!emptyIndices.includes(index));
-        break;
-      // Medium level is basically ~half of the moves are minimax and the other ~half random
-      case GAME_MODES.medium:
-        const smartMove = !board.isEmpty(grid) && Math.random() < 0.5;
-        if (smartMove) {
-          index = minimax(board, players.ai!)[1];
-        } else {
-          do {
-            index = getRandomInt(0, 8);
-          } while (!emptyIndices.includes(index));
-        }
-        break;
-      case GAME_MODES.difficult:
-      default:
-        index = board.isEmpty(grid)
-          ? getRandomInt(0, 8)
-          : minimax(board, players.ai!)[1];
-    }
-
-    if (index !== null && !grid[index]) {
-      if (players.ai !== null) {
-        move(index, players.ai);
-      }
-      setNextMove(players.human);
-    }
-  }, [move, grid, players, mode]);
-
-  /**
-   * Make AI move when it's AI's turn
-   */
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (
-      nextMove !== null &&
-      nextMove === players.ai &&
-      gameState !== GAME_STATES.over
-    ) {
-      // Delay AI moves to make them more natural
-      timeout = setTimeout(() => {
-        aiMove();
-      }, 1000);
-    }
-    return () => timeout && clearTimeout(timeout);
-  }, [nextMove, aiMove, players.ai, gameState]);
+  // AI Move Was Here
 
   const humanMove = (index: number) => {
     if (!grid[index] && nextMove === players.human) {
@@ -266,4 +207,4 @@ const Strikethrough = styled.div<{ styles: string | null }>`
   width: ${({ styles }) => !styles && "0px"};
 `;
 
-export default TicTacToe_ai;
+export default TicTacToe;

@@ -34,6 +34,8 @@ export const ResultModal = ({ isOpen, close, startNewGame, winner }: Props) => {
     </StyledModal>
   );
 };
+
+// Styling Components
 const StyledModal = styled(Modal)`
   height: 300px;
   position: relative;
