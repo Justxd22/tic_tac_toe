@@ -10,7 +10,7 @@ import {
   GAME_MODES,
 } from "./constants";
 import Board from "./Board";
-import { getRandomInt, switchPlayer } from "./utils";
+import { switchPlayer } from "./utils";
 import { border } from "./styles";
 
 const arr = new Array(DIMENSIONS ** 2).fill(null);
@@ -19,7 +19,7 @@ const board = new Board();
 interface Props {
   squares?: Array<number | null>;
 }
-const TicTacToe = ({ squares = arr }: Props) => {
+const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [players, setPlayers] = useState<Record<string, number | null>>({
     human: null,
     ai: null,
@@ -149,12 +149,6 @@ const TicTacToe = ({ squares = arr }: Props) => {
           gameState === GAME_STATES.over ? board.getStrikethroughStyles() : ""
         }
       />
-      <ResultModal
-        isOpen={modalOpen}
-        winner={winner}
-        close={() => setModalOpen(false)}
-        startNewGame={startNewGame}
-      />
     </Container>
   );
 };
@@ -207,4 +201,4 @@ const Strikethrough = styled.div<{ styles: string | null }>`
   width: ${({ styles }) => !styles && "0px"};
 `;
 
-export default TicTacToe;
+export default TicTacToe_multi;
