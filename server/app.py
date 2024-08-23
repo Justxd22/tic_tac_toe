@@ -24,6 +24,7 @@ def have_Session():
     null = [ # dont need session
         '/api/status',
         '/register',
+        '/deregister', # remove this (user deletion require auth)
         '/login'
     ]
     if not request.cookies.get("session_id") and not request.path in null:
@@ -33,24 +34,43 @@ def have_Session():
 @app.route("/register", methods=["POST"])
 def users():
     """Nnew user."""
-    email = request.form.get("email")
-    username = request.form.get("username")
-    password = request.form.get("password")
+    data = request.json
+    username = data.get("username")
+    email = data.get("email")
+    password = data.get("password")
     try:
         AUTH.register_user(email, username, password)
         return jsonify({"email": email, "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
 
+
+@app.route("/deregister", methods=["POST"])
+def deluser():
+    """Del user."""
+    data = request.json
+    email = data.get("email")
+    if not email:
+        return jsonify({"message": "email missing"}), 400
+    try:
+        AUTH.deregister_user(email)
+        return jsonify({"email": email, "message": "Deleted"})
+    except ValueError:
+        return jsonify({"message": "something went wrong"}), 400
+
+
 @app.route("/login", methods=["POST"])
 def login():
     """Login route."""
-    email = request.form.get("email")
-    password = request.form.get("password")
-    if not AUTH.valid_login(email, password):
-        abort(401)
-    session_id = AUTH.create_session(email)
-    response = jsonify({"email": email, "message": "logged in"})
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+    state, code = AUTH.valid_login(username, password)
+    if not state:
+        return jsonify({"message": "Not registered" if not code else "Incorrect password"}), 400
+    session_id = AUTH.create_session(username)
+    print(session_id)
+    response = jsonify({"username": username, "message": "logged in"})
     response.set_cookie("session_id", session_id)
     return response
 

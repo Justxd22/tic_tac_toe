@@ -3,36 +3,37 @@ import { FC, useState } from 'react';
 import { FaUser, FaLock, FaArrowLeft } from "react-icons/fa";  
 import Logo from '../assets/Images/Text_Logo.png';  
 
-const Login: FC = () => {
+const Register: FC = () => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Send the login request to the backend
+    // Send the Register request to the backend
     try {
-      const response = await fetch('http://127.0.0.1:3000/login', {
+      const response = await fetch('http://127.0.0.1:3000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, username, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Handle successful login (e.g., redirect or store tokens)
-        console.log('Login successful:', data);
-        window.location.href = '/tictactoe';
+        // Handle successful Register (e.g., redirect or store tokens)
+        console.log('Register successful:', data);
+        window.location.href = '/';
       } else {
-        // Handle login error
-        console.error('Login failed:', data.message);
-        alert(`Login failed: ${data.message}`);
+        // Handle Register error
+        console.error('Register failed:', data.message);
+        alert(`Register failed: ${data.message}`);
       }
     } catch (error) {
-      console.error('Error occurred during login:', error);
+      console.error('Error occurred during Register:', error);
     }
   };
 
@@ -41,7 +42,17 @@ const Login: FC = () => {
       <img src={Logo} alt="Logo" className="logo" />
       <div className="wrapper">
         <form onSubmit={handleSubmit}>
-          <h1>Login</h1>
+          <h1>Sign up</h1>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <FaUser className="icon"/>
+          </div>
           <div className="input-box">
             <input
               type="text"
@@ -62,9 +73,9 @@ const Login: FC = () => {
             />
             <FaLock className="icon"/>
           </div>
-          <button type="submit">Login</button>
+          <button type="submit">Sign up</button>
           <div className="register-link">
-            <p>Don't have an account? <a href="/register">Register</a></p>
+            <p>Have an account? <a href="#">Login</a></p>
           </div>
         </form>
       </div>
@@ -76,4 +87,4 @@ const Login: FC = () => {
   );
 }
 
-export default Login;
+export default Register;

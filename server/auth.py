@@ -17,7 +17,7 @@ class Auth:
             c.insert_one({
                 'username': 'admin',
                 'email': 'admin@com',
-                'password': 'admin123',
+                'password': _hash_password('admin123'),
                 'wins': '100',
                 'losses': '10',
                 'draws': '1',
@@ -37,44 +37,62 @@ class Auth:
 
 
     def register_user(self, email: str, username: str, password: str):
-        u = self.users.find_one({ 'email': email })
+        e = self.users.find_one({ 'email': email })
+        u = self.users.find_one({ 'username': username })
         if u:
+            raise ValueError(f"User {username} already exists")
+        if e:
             raise ValueError(f"User {email} already exists")
+        data = {
+            'username': username,
+            'email': email,
+            'password': _hash_password(password),
+            'wins': '0',
+            'losses': '0',
+            'draws': '0',
+            'game_played': '0',
+            'score': '0',
+            'created_at': time.time(),
+            'avatar': 'nopic'
+        }
+        user = self.users.insert_one(data)
+        return user
+
+
+    def deregister_user(self, email: str):
+        e = self.users.find_one({ 'email': email })
+        if not e:
+            raise ValueError(f"User {email} doesn't exist")
+
+        result = self.users.delete_one({'email': email})
+        if result.deleted_count == 1:
+            return f"User {email} has been deregistered successfully."
         else:
-            data = {
-                'username': username,
-                'email': email,
-                'password': _hash_password(password),
-                'wins': '0',
-                'losses': '0',
-                'draws': '0',
-                'game_played': '0',
-                'score': '0',
-                'created_at': time.time(),
-                'avatar': 'nopic'
-            }
-            user = self.users.insert_one(data)
-            return user
+            raise ValueError(f"Failed to deregister user {email}.")
 
 
-    def valid_login(self, email: str, password: str) -> bool:
+    def valid_login(self, username: str, password: str) -> bool:
         """Is valid."""
-        u = self.users.find_one({ 'email': email })
+        u = self.users.find_one({ 'username': username })
         if not u:
-            return False
-        if not bcrypt.checkpw(password.encode('utf-8'), u.get('password')):
-            return False
-        return True
+            print("fffff", username)
+            return (False, 0)
+        try:
+            if not bcrypt.checkpw(password.encode('utf-8'), u.get('password')):
+                return (False, 1)
+        except Exception:
+            return (False, 1)
+        return (True, 0)
 
-    def create_session(self, email: str) -> str:
+    def create_session(self, username: str) -> str:
         """Create session."""
-        u = self.users.find_one({ 'email': email })
+        u = self.users.find_one({ 'username': username })
         if not u:
             return None
         session_id = str(uuid4())
         self.db['sessions'].insert_one({
             'session_id': session_id,
-            'email': email,
+            'username': username,
             'created_at': time.time()
         })
         return session_id
