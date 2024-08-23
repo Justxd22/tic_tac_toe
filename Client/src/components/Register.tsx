@@ -75,7 +75,7 @@ const Register: FC = () => {
           </div>
           <button type="submit">Sign up</button>
           <div className="register-link">
-            <p>Have an account? <a href="#">Login</a></p>
+            <p>Have an account? <a href="/login">Login</a></p>
           </div>
         </form>
       </div>
