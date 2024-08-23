@@ -1,95 +1,99 @@
-/* body {
-  font-family: "Poppins", sans-serif;
+body {
+  font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   justify-content: center;
-  align-items: flex-end; //Adjust the form below the center 
+  align-items: flex-end; /* Adjust form below center */
   min-height: 100vh;
-  background: url("../Images/LoginBackground.png") no-repeat center center;
+  background: url('../assets/LoginBackground.png') no-repeat center center;
   background-size: cover;
   position: relative;
-} */
+}
 
-​ .wrapper {
+.wrapper {
   width: 420px;
   background: transparent; /* Remove black box background */
   color: white;
   border-radius: 10px;
   padding: 30px 40px;
-  box-shadow: none; /* Remove box shadow */
-  margin-bottom: 100px; /* Move the form down */
+  margin-top: 245px; /* Move the form down */
 }
-​ .wrapper h1 {
+
+.wrapper h1 {
   font-size: 36px;
   font-weight: 700;
   text-align: center;
   margin-top: 15px;
   margin-bottom: 40px;
 }
-​ .logo {
+
+.logo {
   position: absolute;
-  top: 20%;
+  top: 5%;
   left: 50%;
   transform: translateX(-50%); /* Center the logo horizontally */
-  max-width: 380px; /* Adjust the size of the logo */
+  max-width: 380px; /* Adjust logo size */
 }
-​ .wrapper .input-box {
+
+.input-box {
   position: relative;
   width: 100%;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.08),
-    rgba(255, 255, 255, 0.35)
-  ); /* Gradient background */
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.35)); /* Gradient background */
   border: none;
-  outline: none;
   border-radius: 40px;
   font-size: 16px;
   color: white;
   padding: 15px 45px 15px 20px;
   margin-bottom: 20px;
 }
-​ .input-box input {
+
+.input-box input {
   width: 100%;
   background: transparent; /* Keep input field transparent */
   border: none;
   outline: none;
   color: white;
 }
-​ .input-box input::placeholder {
+
+.input-box input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
-​ .input-box .icon {
+
+.input-box .icon {
   position: absolute;
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 16px;
 }
-​ .wrapper .remember-forgot {
+
+.remember-forgot {
   display: flex;
   justify-content: space-between;
   font-size: 14.5px;
   margin: -10px 0 15px;
 }
-​ .remember-forgot label input {
+
+.remember-forgot label input {
   accent-color: white;
   margin-right: 4px;
 }
-​ .remember-forgot a {
+
+.remember-forgot a {
   color: white;
   text-decoration: none;
 }
-​ .remember-forgot a:hover {
+
+.remember-forgot a:hover {
   text-decoration: underline;
 }
-​ .wrapper button {
+
+.wrapper button {
   width: 100%;
   height: 45px;
   background: white;
   border: none;
-  outline: none;
   border-radius: 40px;
   cursor: pointer;
   font-size: 16px;
@@ -98,28 +102,31 @@
   transition: background 0.3s ease, color 0.3s ease;
   margin-top: 40px;
 }
-​ .wrapper button:hover {
+
+.wrapper button:hover {
   background: #f1f1f1;
   color: rgb(30, 142, 255); /* Change text color to blue */
 }
-​ .wrapper .register-link {
+
+.register-link {
   padding-top: 15px;
   font-size: 14.5px;
   text-align: center;
   margin: 20px 0 8px;
 }
-​ .register-link p a {
+
+.register-link a {
   color: rgb(30, 142, 255);
   text-decoration: none;
   font-weight: 600;
   margin-left: 4px;
 }
-​ .register-link p a:hover {
+
+.register-link a:hover {
   text-decoration: underline;
 }
-​
-  /* Add styles for the Back button */
-  .back-button {
+
+.back-button {
   position: absolute;
   bottom: 20px;
   left: 20px;
@@ -130,10 +137,12 @@
   text-decoration: none;
   font-weight: 600;
 }
-​ .back-button .icon {
+
+.back-button .icon {
   margin-right: 8px;
   font-size: 18px;
 }
-​ .back-button:hover {
+
+.back-button:hover {
   text-decoration: none;
 }
