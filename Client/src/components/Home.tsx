@@ -8,11 +8,8 @@ const Home: FC = () => {
 
   return (
     <>
-      <img src={Logo} alt="Logo" className="logo" />
-      <div className="wrapper">
-        
-      </div>
-      <a href="/tictactoe" className="back-button">
+      <img src={Logo} alt="Logo"/>
+      <a href="/tictactoe">
        <FaAngleDoubleDown size={128} color='white' />
         <p className='text-center text-white'>Play Now</p>
       </a>
