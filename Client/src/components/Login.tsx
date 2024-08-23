@@ -41,11 +41,11 @@ const Login: FC = () => {
         <form onSubmit={handleSubmit}>
           <h1>Login</h1>
           <div className="input-box">
-            <input type="text" placeholder="Username" required />
+            <input type="text" placeholder="Username" required value={username} onChange={(e) => setUsername(e.target.value)} />
             <FaUser className="icon" />
           </div>
           <div className="input-box">
-            <input type="password" placeholder="Password" required />
+            <input type="password" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)}/>
             <FaLock className="icon" />
           </div>
           <button type="submit">Login</button>
