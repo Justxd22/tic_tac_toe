@@ -1,15 +1,15 @@
-body {
+/* body {
   font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* Adjust the form below the center */
+  align-items: flex-end; //Adjust the form below the center 
   min-height: 100vh;
   background: url("../Images/LoginBackground.png") no-repeat center center;
   background-size: cover;
   position: relative;
-}
+} */
 
 ​ .wrapper {
   width: 420px;
