@@ -33,15 +33,10 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [mode, setMode] = useState(GAME_MODES.medium);
   const [socket, setSocket] = useState(null);
-  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const newSocket = io('http://localhost:3000');
     setSocket(newSocket);
-
-    newSocket.on('message', (msg) => {
-      setMessages((prev) => [...prev, msg]);
-    });
 
     return () => newSocket.close();
   }, []);
@@ -85,6 +80,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
    */
   const move = useCallback(
     (index: number, player: number | null) => {
+      // console.log('MOVE',index);
       if (player !== null && gameState === GAME_STATES.inProgress) {
         setGrid((grid) => {
           const gridCopy = grid.concat();
@@ -96,18 +92,51 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     [gameState]
   );
 
-  // AI Move Was Here
+  const socketMove = useCallback(() => {
+    const handleBackendAI = (msg) => {
+      console.log('SOCKET', msg.index, msg);
+  
+      const index = msg.index;
+  
+      if (index !== null && !grid[index]) {
+        if (players.ai !== null) {
+          move(index, players.ai);
+        }
+        setNextMove(players.human);
+      }
+    };
+  
+    // Attach the event listener
+    socket.on('backendAI', handleBackendAI);
+  
+    // Clean up the event listener when the component is unmounted or re-rendered
+    return () => {
+      socket.off('backendAI', handleBackendAI);
+    };
+  }, [move, grid, players.ai, mode]);
+  /**
+   * Make AI move when it's AI's turn
+   */
+  useEffect(() => {
+    if (
+      nextMove !== null &&
+      nextMove === players.ai &&
+      gameState !== GAME_STATES.over
+    ) {
+      socketMove();
+    }
+  }, [nextMove, socketMove, players.ai, gameState]);
 
   const humanMove = (index: number) => {
     if (!grid[index] && nextMove === players.human) {
       move(index, players.human);
       setNextMove(players.ai);
-      console.log(players.human, index) // SEND TO SOCKETS // 1 is X 0 is O
+      console.log('HUMAN', index) // SEND TO SOCKETS // 1 is X 0 is O
       const data = {
         player: players.human,
         index: index
       };
-      socket.emit('message', data);
+      socket.emit('humanMove', data);
     }
   };
 

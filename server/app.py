@@ -9,7 +9,7 @@ from auth import Auth
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from flask_socketio import SocketIO, emit
-import os
+import os, random
 
 app = Flask("DEMO")
 CORS(app)
@@ -119,6 +119,23 @@ def demo():
 def handle_message(msg):
     print(f"Message: {msg}")
     emit('message', "yoooo", broadcast=True)
+
+taken = []
+@socketio.on('humanMove')
+def handle_message(msg):
+    print(f"Message: {msg}", taken, msg['index'])
+    taken.append(msg['index'])
+    x = random.randint(0, 8)
+    while 1:
+        if x in taken:
+            x = random.randint(0, 8)
+        else:
+            break
+    d = {
+        'player': 2,
+        'index': x
+    }
+    emit('backendAI', d, broadcast=True)
 
 # app.run(host="127.0.0.1", port="3000", debug=True)
 socketio.run(app, host="127.0.0.1", port=3000, debug=True)
