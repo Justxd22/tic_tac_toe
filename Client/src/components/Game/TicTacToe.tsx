@@ -79,6 +79,7 @@ function TicTacToe() {
     if (tiles[index] !== null) {
       return;
     }
+    console.log(index, tiles[index], playerTurn)
 
     const newTiles = [...tiles];
     newTiles[index] = playerTurn;

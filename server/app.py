@@ -7,6 +7,7 @@ from error import error
 from routes import api
 from auth import Auth
 from pymongo import MongoClient
+from flask_socketio import SocketIO, emit
 import os
 
 app = Flask("DEMO")
@@ -14,6 +15,7 @@ CORS(app)
 
 app.register_blueprint(api)
 app.register_blueprint(error)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 db = MongoClient('mongodb://localhost:27017/')['tic_tac_toe']
 AUTH = Auth(db)
@@ -24,7 +26,7 @@ def have_Session():
     null = [ # dont need session
         '/api/status',
         '/register',
-        '/deregister', # remove this (user deletion require auth)
+        '/deregister', # remove this (user deletion require auth) here for debug
         '/login'
     ]
     if not request.cookies.get("session_id") and not request.path in null:
@@ -108,5 +110,10 @@ def demo():
     return jsonify(data)
 
 
-app.run(host="127.0.0.1", port="3000", debug=True)
+@socketio.on('message')
+def handle_message(msg):
+    print(f"Message: {msg}")
+    emit('message', "yoooo", broadcast=True)
 
+# app.run(host="127.0.0.1", port="3000", debug=True)
+socketio.run(app, host="127.0.0.1", port=3000, debug=True)

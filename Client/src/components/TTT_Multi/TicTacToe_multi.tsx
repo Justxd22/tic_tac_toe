@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import io from 'socket.io-client';
 import styled from "styled-components";
 import {
   PLAYER_X,
@@ -11,6 +12,7 @@ import {
 } from "./constants";
 import Board from "./Board";
 import { switchPlayer } from "./utils";
+import { ResultModal } from "./ResultModal";
 import { border } from "./styles";
 
 const arr = new Array(DIMENSIONS ** 2).fill(null);
@@ -30,6 +32,20 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [nextMove, setNextMove] = useState<null | number>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [mode, setMode] = useState(GAME_MODES.medium);
+  const [socket, setSocket] = useState(null);
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    const newSocket = io('http://localhost:3000');
+    setSocket(newSocket);
+
+    newSocket.on('message', (msg) => {
+      setMessages((prev) => [...prev, msg]);
+    });
+
+    return () => newSocket.close();
+  }, []);
+
 
   /**
    * On every move, check if there is a winner. If yes, set game state to over and open result modal
@@ -86,6 +102,12 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     if (!grid[index] && nextMove === players.human) {
       move(index, players.human);
       setNextMove(players.ai);
+      console.log(players.human, index) // SEND TO SOCKETS // 1 is X 0 is O
+      const data = {
+        player: players.human,
+        index: index
+      };
+      socket.emit('message', data);
     }
   };
 
@@ -148,6 +170,12 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
         styles={
           gameState === GAME_STATES.over ? board.getStrikethroughStyles() : ""
         }
+      />
+      <ResultModal
+        isOpen={modalOpen}
+        winner={winner}
+        close={() => setModalOpen(false)}
+        startNewGame={startNewGame}
       />
     </Container>
   );
