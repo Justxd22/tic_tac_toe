@@ -23,15 +23,15 @@ class Auth:
                 'draws': '1',
                 'game_played': '111',
                 'score': '1000',
-                'created_at': 'some_time_stamp',
+                'created_at': time.time(),
                 'avatar': 'nopic'
                 })
         if not 'sessions' in db.list_collection_names():
             c = db['sessions']
             c.insert_one({
                 '1234uuid4': {
-                'mail': 'admin@com',
-                'time': 'time'}
+                'username': 'admin@com',
+                'created_at': time.time()}
                 })
         self.users = self.db['users']
 
@@ -102,9 +102,10 @@ class Auth:
         if not session_id:
             return None
         u = self.db['sessions'].find_one({ 'session_id': session_id })
+        print(session_id, u , "AUTHH")
         if not u:
             return None
-        u = self.users.find_one({ 'email': u.get('email') })
+        u = self.users.find_one({ 'user': u.get('user') })
         return u
     
     def get_email_from_session_id(self, session_id: str):

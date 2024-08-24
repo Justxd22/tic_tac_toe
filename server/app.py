@@ -9,21 +9,22 @@ from auth import Auth
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from flask_socketio import SocketIO, emit
-import os, random
+import os, random, time
 
 app = Flask("DEMO")
-CORS(app)
+CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+
 
 app.register_blueprint(api)
 app.register_blueprint(error)
 socketio = SocketIO(app, cors_allowed_origins="*")
 load_dotenv()
 
-# database_url = os.getenv('DATABASE_URL', 'mongodb://localhost:27017/')
-# client = MongoClient(database_url)
-# db = client['tic_tac_toe']
+database_url = os.getenv('DATABASE_URL', 'mongodb://localhost:27017/')
+client = MongoClient(database_url)
+db = client['tic_tac_toe']
 
-# AUTH = Auth(db)
+AUTH = Auth(db)
 
 @app.before_request
 def have_Session():
@@ -78,7 +79,7 @@ def login():
     session_id = AUTH.create_session(username)
     print(session_id)
     response = jsonify({"username": username, "message": "logged in"})
-    response.set_cookie("session_id", session_id)
+    response.set_cookie('session_id', session_id, path='/', samesite='None', secure=True, domain="", expires=time.time() + 99999999)
     return response
 
 
@@ -91,6 +92,17 @@ def logout():
         abort(403)
     AUTH.destroy_session(user.id)
     return redirect(url_for("/"))
+
+
+@app.route('/check-session', methods=['GET'])
+def check_session():
+    session_id = request.cookies.get("session_id")
+    print("CHEC", session_id)
+    user = AUTH.get_user_from_session_id(session_id)
+    if user:
+        return jsonify(loggedIn=True), 200
+    else:
+        return jsonify(loggedIn=False), 403
 
 
 @app.route("/profile")
@@ -120,22 +132,60 @@ def handle_message(msg):
     print(f"Message: {msg}")
     emit('message', "yoooo", broadcast=True)
 
-taken = []
+
+# @socketio.on('humanMove')
+# def handle_message(msg):
+#     print(f"Message: {msg}", msg['index'])
+#     x = random.randint(0, 8)
+#     d = {
+#         'player': 2,
+#         'index': x
+#     }
+#     emit('backendAI', d, broadcast=True)
+
+waiting_players = []
+games = {}
+
+@socketio.on('join_queue')
+def join_queue():
+    session_id = request.cookies.get("session_id")
+    print('session', session_id, games, waiting_players)
+    if session_id not in waiting_players:
+        waiting_players.append(session_id)
+        emit('game_id', session_id)
+        
+    
+    if len(waiting_players) >= 2:
+        player1 = waiting_players.pop(0)
+        player2 = waiting_players.pop(0)
+        game_id = f"{player1}_{player2}"
+        games[game_id] = {'player1': player1, 'player2': player2, 'grid': [None] * 9}
+        
+        emit('start_game', {'game_id': game_id, 'player': 1}, room=player1)
+        emit('start_game', {'game_id': game_id, 'player': 2}, room=player2)
+        print('EMITTTTTTT\n\n\n\n\n\n', games[game_id], game_id)
+
 @socketio.on('humanMove')
-def handle_message(msg):
-    print(f"Message: {msg}", taken, msg['index'])
-    taken.append(msg['index'])
-    x = random.randint(0, 8)
-    while 1:
-        if x in taken:
-            x = random.randint(0, 8)
-        else:
-            break
-    d = {
-        'player': 2,
-        'index': x
-    }
-    emit('backendAI', d, broadcast=True)
+def handle_human_move(data):
+    session_id = request.cookies.get("session_id")
+    print('HUMANNNNNmv', session_id, data)
+    game_id = data['game_id']
+    game = games.get(game_id)
+
+    if not game:
+        return
+
+    if session_id == game['player1']:
+        opponent = game['player2']
+        player = 1
+    else:
+        opponent = game['player1']
+        player = 2
+
+    index = data['index']
+    if game['grid'][index] is None:
+        game['grid'][index] = player
+        emit('move', {'index': index, 'player': player}, room=opponent)
 
 # app.run(host="127.0.0.1", port="3000", debug=True)
 socketio.run(app, host="127.0.0.1", port=3000, debug=True)
