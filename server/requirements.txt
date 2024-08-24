@@ -4,3 +4,4 @@ bcrypt
 pymongo
 flask-socketio
 python-dotenv
+pymongo
