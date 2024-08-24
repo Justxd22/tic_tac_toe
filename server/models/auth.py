@@ -1,10 +1,7 @@
 """Auth here."""
 import bcrypt
-from flask import Blueprint, jsonify
 from uuid import uuid4
-import time
-
-auth = Blueprint('api', __name__, url_prefix="/api/auth")
+from datetime import datetime
 
 class Auth:
     """Auth class."""
@@ -17,7 +14,7 @@ class Auth:
             c.insert_one({
                 'username': 'admin',
                 'email': 'admin@com',
-                'password': _hash_password('admin123'),
+                'password': self.hash_password('admin123'),
                 'wins': '100',
                 'losses': '10',
                 'draws': '1',
@@ -46,13 +43,13 @@ class Auth:
         data = {
             'username': username,
             'email': email,
-            'password': _hash_password(password),
+            'password': self.hash_password(password),
             'wins': '0',
             'losses': '0',
             'draws': '0',
             'game_played': '0',
             'score': '0',
-            'created_at': time.time(),
+            'created_at': datetime.now(datetime.UTC),
             'avatar': 'nopic'
         }
         user = self.users.insert_one(data)
@@ -93,7 +90,7 @@ class Auth:
         self.db['sessions'].insert_one({
             'session_id': session_id,
             'username': username,
-            'created_at': time.time()
+            'created_at': datetime.now(datetime.UTC)
         })
         return session_id
 
@@ -106,7 +103,7 @@ class Auth:
             return None
         u = self.users.find_one({ 'email': u.get('email') })
         return u
-    
+
     def get_email_from_session_id(self, session_id: str):
         """Get user email based on their session id."""
         if not session_id:
@@ -126,13 +123,12 @@ class Auth:
         email = self.get_email_from_session_id(session_id=session_id)
         if not email:
             return 404
-        res = self.db['sessions'].update_one( { 'email': email }, { '$set': { 'password': _hash_password(password) } })
+        res = self.db['sessions'].update_one( { 'email': email }, { '$set': { 'password': self.hash_password(password) } })
         if res > 0:
             return True
         return False
 
-
-def _hash_password(password: str):
-    """Hash given pass."""
-    return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
-
+    @staticmethod
+    def hash_password(password: str):
+        """Hash given pass."""
+        return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
