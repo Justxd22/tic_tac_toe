@@ -1,6 +1,6 @@
 import '../assets/stylesheets/Login.css';
 import { FC, useState } from 'react';
-import { FaUser, FaLock, FaArrowLeft } from "react-icons/fa";  
+import { FaEnvelope, FaUser, FaLock, FaArrowLeft } from "react-icons/fa";  
 import Logo from '../assets/Images/Text_Logo.png';  
 
 const Register: FC = () => {
@@ -51,7 +51,7 @@ const Register: FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <FaUser className="icon"/>
+            <FaEnvelope className="icon"/>
           </div>
           <div className="input-box">
             <input
@@ -75,7 +75,7 @@ const Register: FC = () => {
           </div>
           <button type="submit">Sign up</button>
           <div className="register-link">
-            <p>Have an account? <a href="#">Login</a></p>
+            <p>Have an account? <a href="/login">Login</a></p>
           </div>
         </form>
       </div>

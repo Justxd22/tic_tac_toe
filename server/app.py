@@ -7,6 +7,7 @@ from error import error
 from routes import api
 from auth import Auth
 from pymongo import MongoClient
+from dotenv import load_dotenv
 from flask_socketio import SocketIO, emit
 import os
 
@@ -16,8 +17,12 @@ CORS(app)
 app.register_blueprint(api)
 app.register_blueprint(error)
 socketio = SocketIO(app, cors_allowed_origins="*")
+load_dotenv()
 
-db = MongoClient('mongodb://localhost:27017/')['tic_tac_toe']
+database_url = os.getenv('DATABASE_URL', 'mongodb://localhost:27017/')
+client = MongoClient(database_url)
+db = client['tic_tac_toe']
+
 AUTH = Auth(db)
 
 @app.before_request

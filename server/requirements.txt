@@ -3,3 +3,4 @@ flask_cors
 bcrypt
 pymongo
 flask-socketio
+python-dotenv
