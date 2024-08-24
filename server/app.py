@@ -19,11 +19,11 @@ app.register_blueprint(error)
 socketio = SocketIO(app, cors_allowed_origins="*")
 load_dotenv()
 
-database_url = os.getenv('DATABASE_URL', 'mongodb://localhost:27017/')
-client = MongoClient(database_url)
-db = client['tic_tac_toe']
+# database_url = os.getenv('DATABASE_URL', 'mongodb://localhost:27017/')
+# client = MongoClient(database_url)
+# db = client['tic_tac_toe']
 
-AUTH = Auth(db)
+# AUTH = Auth(db)
 
 @app.before_request
 def have_Session():

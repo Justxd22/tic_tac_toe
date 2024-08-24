@@ -92,28 +92,28 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     [gameState]
   );
 
-  const socketMove = useCallback(() => {
-    const handleBackendAI = (msg) => {
-      console.log('SOCKET', msg.index, msg);
-  
-      const index = msg.index;
-  
-      if (index !== null && !grid[index]) {
-        if (players.ai !== null) {
-          move(index, players.ai);
+  useEffect(() => {
+    if (socket) {
+      const handleBackendAI = (msg: any) => {
+        console.log('SOCKET', msg.index, msg);
+
+        const index = msg.index;
+
+        if (index !== null && !grid[index]) {
+          if (players.ai !== null) {
+            move(index, players.ai);
+          }
+          setNextMove(players.human);
         }
-        setNextMove(players.human);
-      }
-    };
-  
-    // Attach the event listener
-    socket.on('backendAI', handleBackendAI);
-  
-    // Clean up the event listener when the component is unmounted or re-rendered
-    return () => {
-      socket.off('backendAI', handleBackendAI);
-    };
-  }, [move, grid, players.ai, mode]);
+      };
+
+      socket.on('backendAI', handleBackendAI);
+
+      return () => {
+        socket.off('backendAI', handleBackendAI);
+      };
+    }
+  }, [socket, grid, players.ai, players.human, move]);
   /**
    * Make AI move when it's AI's turn
    */
@@ -123,9 +123,10 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
       nextMove === players.ai &&
       gameState !== GAME_STATES.over
     ) {
-      socketMove();
+      // AI move will trigger socket move
+      // No need to call socketMove here; it's handled in the useEffect above
     }
-  }, [nextMove, socketMove, players.ai, gameState]);
+  }, [nextMove, players.ai, gameState]);
 
   const humanMove = (index: number) => {
     if (!grid[index] && nextMove === players.human) {
