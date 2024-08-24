@@ -1,19 +1,21 @@
 # #!/usr/bin/python3
 
-from flask import Flask
+from flask import Flask, g
 from flask_cors import CORS
 # from middleware import LoggingMiddleware
 
 # Import your modules
-from api import auth_bp
-from errors import error
 from multiplayer_socketIO import socketio
 from models.auth import Auth
-from config import get_config
-from database import init_db
-# from web_dynamic import web_bp
 
 def create_app():
+    # Import your modules
+    from api import auth_bp
+    from errors import error
+    from database import init_db
+    from config import get_config
+    # from web_dynamic import web_bp
+
     app = Flask(__name__)
     app.config.from_object(get_config())
     # CORS(app, cors_allowed_origins="*")
@@ -49,7 +51,7 @@ def create_app():
     return app
 
 app = create_app()
-AUTH = Auth(app.db)
+g.AUTH = Auth(app.db)
 
 if __name__ == '__main__':
     # app.run(host="127.0.0.1", port="3000", debug=True)

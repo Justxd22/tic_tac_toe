@@ -1,6 +1,4 @@
-from flask import Blueprint, jsonify, request, abort, redirect, url_for
-from app import AUTH
-
+from flask import Blueprint, jsonify, request, abort, redirect, url_for, g
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -16,10 +14,10 @@ auth_bp = Blueprint('auth', __name__)
 def logout():
     """Logout route."""
     session_id = request.cookies.get("session_id")
-    user = AUTH.get_user_from_session_id(session_id)
+    user = g.AUTH.get_user_from_session_id(session_id)
     if not user:
         abort(403)
-    AUTH.destroy_session(user.id)
+    g.AUTH.destroy_session(user.id)
     response = redirect(url_for("/"))
     response.delete_cookie("session_id")
     return response
@@ -35,10 +33,10 @@ def login():
     data = request.json
     username = data.get("username")
     password = data.get("password")
-    state, code = AUTH.valid_login(username, password)
+    state, code = g.AUTH.valid_login(username, password)
     if not state:
         return jsonify({"message": "Not registered" if not code else "Incorrect password"}), 400
-    session_id = AUTH.create_session(username)
+    session_id = g.AUTH.create_session(username)
     print(session_id)
     response = jsonify({"username": username, "message": "logged in"})
     response.set_cookie("session_id", session_id)
@@ -53,7 +51,7 @@ def deluser():
     if not email:
         return jsonify({"message": "email missing"}), 400
     try:
-        AUTH.deregister_user(email)
+        g.AUTH.deregister_user(email)
         return jsonify({"email": email, "message": "Deleted"})
     except ValueError:
         return jsonify({"message": "something went wrong"}), 400
@@ -67,7 +65,7 @@ def users():
     email = data.get("email")
     password = data.get("password")
     try:
-        AUTH.register_user(email, username, password)
+        g.AUTH.register_user(email, username, password)
         return jsonify({"email": email, "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
