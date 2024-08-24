@@ -2,6 +2,7 @@
 import bcrypt
 from uuid import uuid4
 from datetime import datetime
+from flask import session
 
 class Auth:
     """Auth class."""
@@ -22,13 +23,6 @@ class Auth:
                 'score': '1000',
                 'created_at': 'some_time_stamp',
                 'avatar': 'nopic'
-                })
-        if not 'sessions' in db.list_collection_names():
-            c = db['sessions']
-            c.insert_one({
-                '1234uuid4': {
-                'mail': 'admin@com',
-                'time': 'time'}
                 })
         self.users = self.db['users']
 
@@ -83,47 +77,31 @@ class Auth:
 
     def create_session(self, username: str) -> str:
         """Create session."""
-        u = self.users.find_one({ 'username': username })
-        if not u:
+        if 'username' not in session:
             return None
-        session_id = str(uuid4())
-        self.db['sessions'].insert_one({
-            'session_id': session_id,
-            'username': username,
-            'created_at': datetime.now(datetime.UTC)
-        })
-        return session_id
 
-    def get_user_from_session_id(self, session_id: str):
+        session['username'] = username
+        return username
+
+    def get_user_from_session_id(self):
         """Get user based on their session id."""
-        if not session_id:
+        username = session.get('username', None)
+        if not username:
             return None
-        u = self.db['sessions'].find_one({ 'session_id': session_id })
-        if not u:
-            return None
-        u = self.users.find_one({ 'email': u.get('email') })
+        u = self.users.find_one({ 'username': username })
         return u
 
-    def get_email_from_session_id(self, session_id: str):
-        """Get user email based on their session id."""
-        if not session_id:
-            return None
-        u = self.db['sessions'].find_one({ 'session_id': session_id })
-        if not u:
-            return None
-        return u.get('email')
-
-    def destroy_session(self, session_id: int):
+    def destroy_session(self):
         """Del user session."""
-        self.db['sessions'].delete_one({ 'session_id': session_id })
+        session.pop('username', None)
 
 
-    def update_password(self, session_id, password: str):
+    def update_password(self, password: str):
         """New password."""
-        email = self.get_email_from_session_id(session_id=session_id)
+        email = session.get('email', None)
         if not email:
             return 404
-        res = self.db['sessions'].update_one( { 'email': email }, { '$set': { 'password': self.hash_password(password) } })
+        res = self.users.update_one( { 'email': email }, { '$set': { 'password': self.hash_password(password) } })
         if res > 0:
             return True
         return False

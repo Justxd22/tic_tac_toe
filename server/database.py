@@ -67,29 +67,6 @@ def init_db(app):
     games.create_index([("status", ASCENDING)])
     games.create_index([("created_at", DESCENDING)])
 
-    # Session Collection
-    session_validator = {
-        "$jsonSchema": {
-            "bsonType": "object",
-            "required": ["session_id", "username", "created_at"],
-            "properties": {
-                "session_id": {"bsonType": "string"},
-                "username": {"bsonType": "string"},
-                "created_at": {"bsonType": "date"}
-            }
-        }
-    }
-
-    try:
-        db.create_collection("sessions", validator=session_validator)
-    except CollectionInvalid:
-        db.command("collMod", "sessions", validator=session_validator)
-
-    sessions = db.sessions
-    sessions.create_index([("session_id", ASCENDING)], unique=True)
-    sessions.create_index([("username", ASCENDING)])
-    sessions.create_index([("created_at", DESCENDING)])
-
     # Leaderboard Collection (Optional)
     leaderboard_validator = {
         "$jsonSchema": {

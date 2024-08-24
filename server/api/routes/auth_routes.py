@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, abort, redirect, url_for, g
+from flask import Blueprint, jsonify, request, abort, redirect, url_for, g, session
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -13,13 +13,12 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route("/logout", methods=["DELETE"])
 def logout():
     """Logout route."""
-    session_id = request.cookies.get("session_id")
-    user = g.AUTH.get_user_from_session_id(session_id)
-    if not user:
-        abort(403)
-    g.AUTH.destroy_session(user.id)
+
+    if not session.get("session_id", None):
+        return redirect(url_for("/"))
+
+    session.pop('username')
     response = redirect(url_for("/"))
-    response.delete_cookie("session_id")
     return response
 
 @auth_bp.route("/login", methods=["POST"])
@@ -27,19 +26,19 @@ def login():
     """Login route."""
 
     # If the user already logged in, redirect him to the main page.
-    if request.cookies.get("session_id"):
+    if session.get("session_id", None):
         return redirect(url_for("/"))
 
     data = request.json
     username = data.get("username")
     password = data.get("password")
     state, code = g.AUTH.valid_login(username, password)
+
     if not state:
         return jsonify({"message": "Not registered" if not code else "Incorrect password"}), 400
-    session_id = g.AUTH.create_session(username)
-    print(session_id)
+
+    g.AUTH.create_session(username)
     response = jsonify({"username": username, "message": "logged in"})
-    response.set_cookie("session_id", session_id)
     return response
 
 

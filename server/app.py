@@ -18,6 +18,8 @@ def create_app():
 
     app = Flask(__name__)
     app.config.from_object(get_config())
+    app.secret_key = app.config['SECRET_KEY']
+
     # CORS(app, cors_allowed_origins="*")
     CORS(
         app,
@@ -59,5 +61,8 @@ if __name__ == '__main__':
         app,
         host=app.config['HOST_NAME'],
         port=app.config['APP_PORT'],
-        debug=app.config['DEBUG']
+        debug=app.config['DEBUG'],
+        SESSION_COOKIE_SECURE=True,  # Ensure cookies are sent over HTTPS
+        SESSION_COOKIE_HTTPONLY=True,  # Prevent JavaScript access to cookies
+        SESSION_COOKIE_SAMESITE='Lax',  # Prevent CSRF attacks
         )
