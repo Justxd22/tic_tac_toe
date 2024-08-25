@@ -8,7 +8,7 @@ from routes import api
 from auth import Auth
 from pymongo import MongoClient
 from dotenv import load_dotenv
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room
 import os, random, time
 
 app = Flask("DEMO")
@@ -152,7 +152,8 @@ def join_queue():
     print('session', session_id, games, waiting_players)
     if session_id not in waiting_players:
         waiting_players.append(session_id)
-        emit('game_id', session_id)
+        join_room(session_id)
+        # emit('game_id', session_id)
         
     
     if len(waiting_players) >= 2:

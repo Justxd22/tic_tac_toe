@@ -41,31 +41,35 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
       // transports: ['websocket'], // Optionally specify transports
     });
     setSocket(newSocket);
-    console.log('Socket connection established.');
-
+    newSocket.on('connect', () => {
+      console.log('Socket connection established.');
+      console.log('Socket ID:', newSocket.id); // Now socket.id should be defined
+  });
+    console.log('Socket connection established.'); // printed twice use effect is fucked lamo fix it 
     return () => newSocket.close();
   }, []);
-
   useEffect(() => {
     if (socket) {
       socket.emit('join_queue');
       console.log('joined queue waiting.....');
+      console.log(socket.id);
 
-      socket.on('game_id', (data) => {
-        console.log('GAME_ID', data);
-        setGameid(data);
-      });
+      // socket.on('game_id', (data) => {
+      //   console.log('GAME_ID', data);
+      //   setGameid(data);
+      // });
   
       socket.on('start_game', (data) => {
         console.log('Starting game.....', data);
         setPlayers({ human: data.player, ai: data.player === 1 ? 2 : 1 });
         setGameState(GAME_STATES.inProgress);
+        console.log('STATTEEEEEE', gameState, GAME_STATES.inProgress); // see this line in console i set it to started but it's not started lol
         setNextMove(PLAYER_X);
         setGameid(data.game_id);
       });
   
       socket.on('move', (msg) => {
-        console.log('SOCKET', msg.index, msg);
+        console.log('SOCKET', msg.index, msg, msg.player === 1 ? 2 : 1);
         move(msg.index, msg.player);
         setNextMove(msg.player === 1 ? 2 : 1);
       });
@@ -118,8 +122,9 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
    */
   const move = useCallback(
     (index: number, player: number | null) => {
-      // console.log('MOVE',index);
-      if (player !== null && gameState === GAME_STATES.inProgress) {
+      console.log('MOVE',index, player, gameState);
+      if (player !== null || gameState === GAME_STATES.inProgress) { // changed to or to disable states check
+        console.log('MOVE_VALIDDDDD',index, player);
         setGrid((grid) => {
           const gridCopy = grid.concat();
           gridCopy[index] = player;
