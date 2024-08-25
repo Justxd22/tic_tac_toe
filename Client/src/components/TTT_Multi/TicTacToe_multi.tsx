@@ -33,13 +33,55 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [mode, setMode] = useState(GAME_MODES.medium);
   const [socket, setSocket] = useState(null);
+  const [gameid, setGameid] = useState<string | null>(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3000');
+    const newSocket = io('http://127.0.0.1:3000', {
+      withCredentials: true, // Send cookies with the connection
+      // transports: ['websocket'], // Optionally specify transports
+    });
     setSocket(newSocket);
-
+    newSocket.on('connect', () => {
+      console.log('Socket connection established.');
+      console.log('Socket ID:', newSocket.id); // Now socket.id should be defined
+  });
+    console.log('Socket connection established.'); // printed twice use effect is fucked lamo fix it 
     return () => newSocket.close();
   }, []);
+  useEffect(() => {
+    if (socket) {
+      socket.emit('join_queue');
+      console.log('joined queue waiting.....');
+      console.log(socket.id);
+
+      // socket.on('game_id', (data) => {
+      //   console.log('GAME_ID', data);
+      //   setGameid(data);
+      // });
+  
+      socket.on('start_game', (data) => {
+        console.log('Starting game.....', data);
+        setPlayers({ human: data.player, ai: data.player === 1 ? 2 : 1 });
+        setGameState(GAME_STATES.inProgress);
+        console.log('STATTEEEEEE', gameState, GAME_STATES.inProgress); // see this line in console i set it to started but it's not started lol
+        setNextMove(PLAYER_X);
+        setGameid(data.game_id);
+      });
+  
+      socket.on('move', (msg) => {
+        console.log('SOCKET', msg.index, msg, msg.player === 1 ? 2 : 1);
+        move(msg.index, msg.player);
+        setNextMove(msg.player === 1 ? 2 : 1);
+      });
+
+      console.log('Event listeners set up.');
+  
+      return () => {
+        socket.off('start_game');
+        socket.off('move');
+      };
+    }
+  }, [socket]);
 
 
   /**
@@ -80,8 +122,9 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
    */
   const move = useCallback(
     (index: number, player: number | null) => {
-      // console.log('MOVE',index);
-      if (player !== null && gameState === GAME_STATES.inProgress) {
+      console.log('MOVE',index, player, gameState);
+      if (player !== null || gameState === GAME_STATES.inProgress) { // changed to or to disable states check
+        console.log('MOVE_VALIDDDDD',index, player);
         setGrid((grid) => {
           const gridCopy = grid.concat();
           gridCopy[index] = player;
@@ -92,52 +135,54 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     [gameState]
   );
 
-  useEffect(() => {
-    if (socket) {
-      const handleBackendAI = (msg: any) => {
-        console.log('SOCKET', msg.index, msg);
+  // useEffect(() => {
+  //   if (socket) {
+  //     const handleBackendAI = (msg: any) => {
+  //       console.log('SOCKET', msg.index, msg);
 
-        const index = msg.index;
+  //       const index = msg.index;
 
-        if (index !== null && !grid[index]) {
-          if (players.ai !== null) {
-            move(index, players.ai);
-          }
-          setNextMove(players.human);
-        }
-      };
+  //       if (index !== null && !grid[index]) {
+  //         if (players.ai !== null) {
+  //           move(index, players.ai);
+  //         }
+  //         setNextMove(players.human);
+  //       }
+  //     };
 
-      socket.on('backendAI', handleBackendAI);
+  //     socket.on('backendAI', handleBackendAI);
 
-      return () => {
-        socket.off('backendAI', handleBackendAI);
-      };
-    }
-  }, [socket, grid, players.ai, players.human, move]);
+  //     return () => {
+  //       socket.off('backendAI', handleBackendAI);
+  //     };
+  //   }
+  // }, [socket, grid, players.ai, players.human, move]);
   /**
    * Make AI move when it's AI's turn
    */
-  useEffect(() => {
-    if (
-      nextMove !== null &&
-      nextMove === players.ai &&
-      gameState !== GAME_STATES.over
-    ) {
-      // AI move will trigger socket move
-      // No need to call socketMove here; it's handled in the useEffect above
-    }
-  }, [nextMove, players.ai, gameState]);
+  // useEffect(() => {
+  //   if (
+  //     nextMove !== null &&
+  //     nextMove === players.ai &&
+  //     gameState !== GAME_STATES.over
+  //   ) {
+  //     // AI move will trigger socket move
+  //     // No need to call socketMove here; it's handled in the useEffect above
+  //   }
+  // }, [nextMove, players.ai, gameState]);
 
   const humanMove = (index: number) => {
     if (!grid[index] && nextMove === players.human) {
       move(index, players.human);
       setNextMove(players.ai);
-      console.log('HUMAN', index) // SEND TO SOCKETS // 1 is X 0 is O
+      console.log('HUMAN', index); // SEND TO SOCKETS // 1 is X,  0 is O
       const data = {
         player: players.human,
-        index: index
+        index: index,
+        game_id: gameid,
       };
       socket.emit('humanMove', data);
+
     }
   };
 
