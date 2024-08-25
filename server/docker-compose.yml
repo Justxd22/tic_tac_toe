@@ -1,0 +1,32 @@
+name: tic-tac-toe-backend-mongodb
+services:
+  backend:
+    hostname: backend
+    container_name: backend
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    volumes:
+      - ./:/app
+    command: gunicorn --worker-class eventlet -w 1 app:app --bind backend:3000
+
+  mongodb:
+    hostname: mongo
+    container_name: mongo
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data: {}
