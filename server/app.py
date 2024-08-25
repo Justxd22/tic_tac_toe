@@ -1,6 +1,6 @@
 # #!/usr/bin/python3
 
-from flask import Flask, g
+from flask import Flask
 from flask_cors import CORS
 # from middleware import LoggingMiddleware
 
@@ -10,7 +10,7 @@ from models.auth import Auth
 
 def create_app():
     # Import your modules
-    from api import auth_bp
+    from api import auth_bp, init_api
     from errors import error
     from database import init_db
     from config import get_config
@@ -33,6 +33,7 @@ def create_app():
     app.register_blueprint(error)
     # app.register_blueprint(web_bp)
 
+
     # Initialize the database
     db = init_db(app)
     # The above line import the following from the db file:
@@ -42,6 +43,10 @@ def create_app():
 
     # Make db available to the app
     app.db = db
+
+    # Initialize API
+    auth = Auth(app.db)
+    init_api(auth)
 
     # Initialize SocketIO
     # socketio.init_app(app, cors_allowed_origins="*")
@@ -53,7 +58,10 @@ def create_app():
     return app
 
 app = create_app()
-g.AUTH = Auth(app.db)
+
+@app.route('/')
+def main_route():
+    return "hello friend!"
 
 if __name__ == '__main__':
     # app.run(host="127.0.0.1", port="3000", debug=True)
@@ -62,7 +70,5 @@ if __name__ == '__main__':
         host=app.config['HOST_NAME'],
         port=app.config['APP_PORT'],
         debug=app.config['DEBUG'],
-        SESSION_COOKIE_SECURE=True,  # Ensure cookies are sent over HTTPS
-        SESSION_COOKIE_HTTPONLY=True,  # Prevent JavaScript access to cookies
-        SESSION_COOKIE_SAMESITE='Lax',  # Prevent CSRF attacks
+        async_mode='eventlet'
         )

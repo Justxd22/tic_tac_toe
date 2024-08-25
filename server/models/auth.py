@@ -2,7 +2,6 @@
 import bcrypt
 from uuid import uuid4
 from datetime import datetime
-from flask import session
 
 class Auth:
     """Auth class."""
@@ -16,12 +15,12 @@ class Auth:
                 'username': 'admin',
                 'email': 'admin@com',
                 'password': self.hash_password('admin123'),
-                'wins': '100',
-                'losses': '10',
-                'draws': '1',
-                'game_played': '111',
-                'score': '1000',
-                'created_at': 'some_time_stamp',
+                'wins': 100,
+                'losses': 10,
+                'draws': 1,
+                'game_played': 111,
+                'score': 1000,
+                'created_at': datetime.utcnow(),
                 'avatar': 'nopic'
                 })
         self.users = self.db['users']
@@ -38,12 +37,12 @@ class Auth:
             'username': username,
             'email': email,
             'password': self.hash_password(password),
-            'wins': '0',
-            'losses': '0',
-            'draws': '0',
-            'game_played': '0',
-            'score': '0',
-            'created_at': datetime.now(datetime.UTC),
+            'wins': 0,
+            'losses': 0,
+            'draws': 0,
+            'game_played': 0,
+            'score': 0,
+            'created_at': datetime.utcnow(),
             'avatar': 'nopic'
         }
         user = self.users.insert_one(data)
@@ -69,21 +68,13 @@ class Auth:
             print("fffff", username)
             return (False, 0)
         try:
-            if not bcrypt.checkpw(password.encode('utf-8'), u.get('password')):
+            if not bcrypt.checkpw(password.encode('utf-8'), u.get('password').encode('utf-8')):
                 return (False, 1)
         except Exception:
             return (False, 1)
         return (True, 0)
 
-    def create_session(self, username: str) -> str:
-        """Create session."""
-        if 'username' not in session:
-            return None
-
-        session['username'] = username
-        return username
-
-    def get_user_from_session_id(self):
+    def get_user_from_session_id(session, self):
         """Get user based on their session id."""
         username = session.get('username', None)
         if not username:
@@ -91,12 +82,7 @@ class Auth:
         u = self.users.find_one({ 'username': username })
         return u
 
-    def destroy_session(self):
-        """Del user session."""
-        session.pop('username', None)
-
-
-    def update_password(self, password: str):
+    def update_password(self, session, password: str):
         """New password."""
         email = session.get('email', None)
         if not email:
@@ -109,4 +95,4 @@ class Auth:
     @staticmethod
     def hash_password(password: str):
         """Hash given pass."""
-        return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, abort, redirect, url_for, g, session
+from flask import Blueprint, jsonify, request, redirect, url_for, session
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -14,11 +14,11 @@ auth_bp = Blueprint('auth', __name__)
 def logout():
     """Logout route."""
 
-    if not session.get("session_id", None):
-        return redirect(url_for("/"))
+    if not session.get("username", None):
+        return redirect(url_for("main_route"))
 
     session.pop('username')
-    response = redirect(url_for("/"))
+    response = redirect(url_for("main_route"))
     return response
 
 @auth_bp.route("/login", methods=["POST"])
@@ -26,18 +26,18 @@ def login():
     """Login route."""
 
     # If the user already logged in, redirect him to the main page.
-    if session.get("session_id", None):
-        return redirect(url_for("/"))
+    if session.get("username", None):
+        return redirect(url_for("main_route"))
 
-    data = request.json
+    data = request.get_json(silent=True)
     username = data.get("username")
     password = data.get("password")
-    state, code = g.AUTH.valid_login(username, password)
+    state, code = AUTH.valid_login(username, password)
 
     if not state:
         return jsonify({"message": "Not registered" if not code else "Incorrect password"}), 400
 
-    g.AUTH.create_session(username)
+    session['username'] = username
     response = jsonify({"username": username, "message": "logged in"})
     return response
 
@@ -45,12 +45,15 @@ def login():
 @auth_bp.route("/deregister", methods=["POST"])
 def deluser():
     """Del user."""
-    data = request.json
+    data = request.get_json(silent=True)
+    if not data:
+        return jsonify({"message": "missing parameters"}), 400
     email = data.get("email")
     if not email:
         return jsonify({"message": "email missing"}), 400
     try:
-        g.AUTH.deregister_user(email)
+        AUTH.deregister_user(email)
+        session.pop('username', None)
         return jsonify({"email": email, "message": "Deleted"})
     except ValueError:
         return jsonify({"message": "something went wrong"}), 400
@@ -59,12 +62,16 @@ def deluser():
 @auth_bp.route("/register", methods=["POST"])
 def users():
     """New user."""
-    data = request.json
+    data = request.get_json(silent=True)
     username = data.get("username")
     email = data.get("email")
     password = data.get("password")
     try:
-        g.AUTH.register_user(email, username, password)
+        AUTH.register_user(email, username, password)
         return jsonify({"email": email, "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
+
+def init_auth_routes(auth):
+    global AUTH
+    AUTH = auth
