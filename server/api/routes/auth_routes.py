@@ -9,7 +9,6 @@ auth_bp = Blueprint('auth', __name__)
 #     # Your code here
 #     return jsonify({'status': True}), 200
 
-
 @auth_bp.route("/logout", methods=["DELETE"])
 def logout():
     """Logout route."""
@@ -30,6 +29,9 @@ def login():
         return redirect(url_for("main_route"))
 
     data = request.get_json(silent=True)
+    if data is None:
+        return jsonify({"message": "missing parameters"}), 400
+
     username = data.get("username")
     password = data.get("password")
     state, code = AUTH.valid_login(username, password)
@@ -63,6 +65,9 @@ def deluser():
 def users():
     """New user."""
     data = request.get_json(silent=True)
+    if data is None:
+        return jsonify({"message": "missing parameters"}), 400
+
     username = data.get("username")
     email = data.get("email")
     password = data.get("password")

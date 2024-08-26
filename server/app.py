@@ -36,10 +36,6 @@ def create_app():
 
     # Initialize the database
     db = init_db(app)
-    # The above line import the following from the db file:
-        # database_url = os.getenv('DATABASE_URL', 'mongodb://localhost:27017/')
-        # client = MongoClient(database_url)
-        # db = client['tic_tac_toe']
 
     # Make db available to the app
     app.db = db
@@ -69,6 +65,5 @@ if __name__ == '__main__':
         app,
         host=app.config['HOST_NAME'],
         port=app.config['APP_PORT'],
-        debug=app.config['DEBUG'],
-        async_mode='eventlet'
+        debug=app.config['DEBUG'].lower() == 'true',
         )

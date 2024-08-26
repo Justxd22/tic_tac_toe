@@ -5,7 +5,7 @@ from .production import ProductionConfig
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
-load_dotenv(dotenv_path="../.env")
+load_dotenv()
 
 def get_config():
     env = os.getenv('FLASK_ENV', 'development').lower()

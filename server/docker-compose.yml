@@ -14,7 +14,7 @@ services:
       - mongodb
     volumes:
       - ./:/app
-    command: gunicorn --worker-class eventlet -w 1 app:app --bind backend:3000
+    command: gunicorn --worker-class eventlet -w 1 app:app --bind 0.0.0.0:3000
 
   mongodb:
     hostname: mongo
@@ -23,10 +23,19 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+      - MONGO_NON_ROOT_USERNAME=${MONGO_NON_ROOT_USERNAME}
+      - MONGO_NON_ROOT_PASSWORD=${MONGO_NON_ROOT_PASSWORD}
     volumes:
       - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
 volumes:
-  mongodb_data: {}
+  mongodb_data:
+    name: mongodb_data
+
+networks:
+  default:
+    name: tic-tac-toe-network
