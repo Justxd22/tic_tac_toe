@@ -1,48 +1,23 @@
 import React, { FC, useState, useEffect } from "react";
-import { FaUser, FaLock, FaArrowLeft } from "react-icons/fa";  
-import Logo from '../assets/Images/Text_Logo.png';  
+import { FaUser, FaLock, FaArrowLeft } from "react-icons/fa";
+import Logo from '../assets/Images/Text_Logo.png';
 import '../assets/stylesheets/Login.css';
 
 const Login: FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:3000/check-session', {
-          method: 'GET',
-          credentials: 'include', // Include credentials to check for cookies
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.loggedIn) {
-            window.location.href = '/tictactoe';
-          }
-        }
-        else {
-          console.log("Not logged in.")
-        }
-      } catch (error) {
-        console.error('Error checking session:', error);
-      }
-    };
-
-    checkSession();
-  }, []);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://127.0.0.1:3000/login', {
+      const response = await fetch('http://127.0.0.1:3000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
-        credentials: 'include',
+        credentials: 'include', // Include credentials to save cookies, only in cross-origin requests
       });
 
       const data = await response.json();
