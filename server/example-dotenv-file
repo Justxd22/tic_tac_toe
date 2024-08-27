@@ -1,12 +1,11 @@
 # This file contains environment variables for the Flask application and MongoDB
 
 # Flask environment variables
-# FLASK_ENV == production when running the application in containers
-
+# Only use production env when running in docker
 FLASK_ENV=development
-DEBUG=True
+DEBUG=False
 SECRET_KEY=FLASK-tic_tac_toe-APP
-CORS_ORIGINS=http://sicario.tech:80
+CORS_ORIGINS=http://localhost:5173
 HOST_NAME=localhost
 APP_PORT=3000
 

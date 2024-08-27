@@ -15,4 +15,9 @@ class ProductionConfig(BaseConfig):
         'CORS_METHODS': ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
     }
 
+    if BaseConfig.MONGO_DB_USERNAME is None:
+        raise ValueError("No MONGO_DB_USERNAME set for Flask application")
+    elif BaseConfig.MONGO_DB_PASSWD is None:
+        raise ValueError("No MONGO_DB_PASSWD set for Flask application")
+
     MONGO_URI = f"mongodb://{BaseConfig.MONGO_DB_USERNAME}:{BaseConfig.MONGO_DB_PASSWD}@mongo:27017/{BaseConfig.MONGO_DB_NAME}"

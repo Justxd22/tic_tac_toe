@@ -16,10 +16,6 @@ class BaseConfig:
         raise ValueError("No APP_PORT set for Flask application")
     elif MONGO_DB_NAME is None:
         raise ValueError("No MONGO_APP_DB set for Flask application")
-    elif MONGO_DB_USERNAME is None:
-        raise ValueError("No MONGO_DB_USERNAME set for Flask application")
-    elif MONGO_DB_PASSWD is None:
-        raise ValueError("No MONGO_DB_PASSWD set for Flask application")
 
     # SESSION_COOKIE_SECURE = False,  # Ensure cookies are sent over HTTPS
     # SESSION_COOKIE_HTTPONLY = True,  # Prevent JavaScript access to cookies
