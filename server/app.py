@@ -24,7 +24,8 @@ def create_app():
     CORS(
         app,
         origins=app.config['CORS_CONFIG']['CORS_ORIGINS'],
-        methods=app.config['CORS_CONFIG']['CORS_METHODS']
+        methods=app.config['CORS_CONFIG']['CORS_METHODS'],
+        supports_credentials=True, # Required for cookies, in cross-origin requests
         )
 
 
@@ -47,6 +48,7 @@ def create_app():
     # Initialize SocketIO
     # socketio.init_app(app, cors_allowed_origins="*")
     socketio.init_app(app, cors_allowed_origins=app.config['CORS_CONFIG']['CORS_ORIGINS'])
+    # socketio.init_app(app, cors_allowed_origins="http://localhost:5173")
 
     # Apply middleware
     # app.wsgi_app = LoggingMiddleware(app.wsgi_app)
