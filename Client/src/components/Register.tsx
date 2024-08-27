@@ -1,7 +1,7 @@
 import '../assets/stylesheets/Login.css';
 import { FC, useState } from 'react';
-import { FaEnvelope, FaUser, FaLock, FaArrowLeft } from "react-icons/fa";  
-import Logo from '../assets/Images/Text_Logo.png';  
+import { FaEnvelope, FaUser, FaLock, FaArrowLeft } from "react-icons/fa";
+import Logo from '../assets/Images/Text_Logo.png';
 
 const Register: FC = () => {
   const [username, setUsername] = useState('');
@@ -13,7 +13,7 @@ const Register: FC = () => {
 
     // Send the Register request to the backend
     try {
-      const response = await fetch('http://127.0.0.1:3000/register', {
+      const response = await fetch('http://127.0.0.1:3000/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ const Register: FC = () => {
       if (response.ok) {
         // Handle successful Register (e.g., redirect or store tokens)
         console.log('Register successful:', data);
-        window.location.href = '/';
+        window.location.href = '/login';
       } else {
         // Handle Register error
         console.error('Register failed:', data.message);
