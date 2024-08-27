@@ -38,9 +38,8 @@ This project is a multiplayer Tic-Tac-Toe game implemented using Flask for the b
 - Database: MongoDB
 - Real-time Communication: Socket.IO
 - Frontend: HTML, CSS, JavaScript (details may vary based on your implementation)
-- Authentication: JWT (JSON Web Tokens)
+- Authentication: Flask sessions
 - WSGI Server: Gunicorn
-- Process Manager: Supervisor
 - Web Server: Nginx (for production deployment)
 
 ## Project Structure
@@ -127,13 +126,7 @@ tic-tac-toe/
    - Initialize it with username and password, if needed.
 
 5. Set up environment variables:
-   Create a `.env` file in the root directory and add the following:
-
-   ```text
-   FLASK_ENV=development
-   SECRET_KEY=your_secret_key
-   MONGO_URI=mongodb://username:password@localhost:27017/tic_tac_toe
-   ```
+   Create a `.env` file in the root directory to add your env variables. [example file](./server/example-dotenv-file)
 
 ## Running the Application
 
@@ -152,8 +145,8 @@ For production, refer to the Deployment section.
 - POST `/api/auth/register`: Register a new user
 - POST `/api/auth/login`: User login
 - DELETE `/api/auth/logout`: User logout
-- POST `/api/auth/deregister`: Delete user account
-<!-- - GET `/api/games`: Get list of games
+<!-- - POST `/api/auth/deregister`: Delete user account
+- GET `/api/games`: Get list of games
 - POST `/api/games`: Create a new game
 - GET `/api/games/<game_id>`: Get game details
 - GET `/api/leaderboard`: Get leaderboard -->
