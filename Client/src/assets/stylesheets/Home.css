@@ -1,0 +1,57 @@
+body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('../Images/LoginBackground.png') no-repeat center center;
+  background-size: cover;
+}
+
+img {
+  max-width: 60%;
+  height: auto;
+  display: block;
+  margin-bottom: 60px;
+}
+
+a {
+  text-align: center;
+  display: block;
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #61dafb;
+}
+
+.play-button {
+  position: relative;
+  display: inline-block;
+}
+
+.icon-container {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.play-text {
+  position: absolute;
+  top: -20px; /* Adjust this value to position the text above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease 0.1s; /* Delayed fade-in */
+  margin: 0;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.play-button:hover .icon-container {
+  transform: translateY(10px);
+}
+
+.play-button:hover .play-text {
+  opacity: 1;
+}

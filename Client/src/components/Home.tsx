@@ -1,17 +1,17 @@
-import '../assets/stylesheets/Login.css';
+import '../assets/stylesheets/Home.css';
 import { FC } from 'react';
 import { FaAngleDoubleDown } from "react-icons/fa";  
 import Logo from '../assets/Images/Text_Logo.png';  
 
 const Home: FC = () => {
-  
-
   return (
     <>
       <img src={Logo} alt="Logo"/>
-      <a href="/tictactoe">
-       <FaAngleDoubleDown size={128} color='white' />
-        <p className='text-center text-white'>Play Now</p>
+      <a href="/tictactoe" className="play-button">
+        <p className='play-text'>PLAY</p>
+        <div className="icon-container">
+          <FaAngleDoubleDown size={128} color='white' />
+        </div>
       </a>
     </>
   );
