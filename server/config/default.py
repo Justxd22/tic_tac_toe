@@ -11,6 +11,7 @@ class BaseConfig:
     MONGO_DB_PASSWD = os.getenv("MONGO_NON_ROOT_PASSWORD", None)
 
     CORS_SUPPORTS_CREDENTIALS = os.getenv("CORS_SUPPORTS_CREDENTIALS", 'false')
+    SAMESITE_POLICY = os.getenv("SESSION_COOKIE_SAMESITE", 'Lax')
 
     if HOST_NAME is None:
         raise ValueError("No HOST_NAME set for Flask application")

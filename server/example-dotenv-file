@@ -1,3 +1,4 @@
+
 # This file contains environment variables for the Flask application and MongoDB
 
 # Flask environment variables
@@ -5,9 +6,6 @@
 FLASK_ENV=development
 DEBUG=True
 SECRET_KEY=FLASK-tic_tac_toe-APP
-# CORS_ORIGINS=http://localhost:5173,http://localhost:4173,http://localhost:3000
-CORS_ORIGINS=http://127.0.0.1:3000
-CORS_SUPPORTS_CREDENTIALS=False
 HOST_NAME=localhost
 APP_PORT=3000
 
@@ -17,3 +15,13 @@ MONGO_ROOT_PASSWORD=root_passwd
 MONGO_DATABASE=tic_tac_toe_db
 MONGO_NON_ROOT_USERNAME=app_user
 MONGO_NON_ROOT_PASSWORD=app_password
+
+# CORS environment variables for same-origin requests
+# CORS_ORIGINS=http://127.0.0.1:3000
+# CORS_SUPPORTS_CREDENTIALS=False
+# SESSION_COOKIE_SAMESITE='Lax'  # Restrict cookie sending for cross-site requests
+
+# CORS environment variables for cross-origin requests
+CORS_ORIGINS=http://localhost:5173,http://localhost:4173
+CORS_SUPPORTS_CREDENTIALS=True
+SESSION_COOKIE_SAMESITE='None'  # Restrict cookie sending for cross-site requests

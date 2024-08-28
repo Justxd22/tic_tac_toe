@@ -27,7 +27,7 @@ def create_app():
     app.config.update(
         SESSION_COOKIE_SECURE=False,  # Ensure cookies are only sent over HTTPS
         SESSION_COOKIE_HTTPONLY=True,  # Prevent JavaScript access to session cookie
-        SESSION_COOKIE_SAMESITE='Lax',  # Restrict cookie sending for cross-site requests
+        SESSION_COOKIE_SAMESITE=app.config["SAMESITE_POLICY"],  # Restrict cookie sending for cross-site requests
         PERMANENT_SESSION_LIFETIME=timedelta(minutes=30),  # Set session lifetime
     )
 
