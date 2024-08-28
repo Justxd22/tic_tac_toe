@@ -224,6 +224,11 @@ const Container = styled.div<{ dims: number }>`
   width: ${({ dims }) => `${dims * (SQUARE_DIMS + 5)}px`};
   flex-flow: wrap;
   position: relative;
+  color: white;
+  background-image: url('/src/assets/Images/board.png'); /* Add your image path here */
+  background-size: cover; /* Adjust based on your desired look */
+  background-repeat: no-repeat;
+  filter: brightness(0) invert(1);
 `;
 
 const Square = styled.div`
