@@ -13,20 +13,16 @@ auth_bp = Blueprint('auth', __name__)
 def logout():
     """Logout route."""
 
-    if not session.get("username", None):
-        return redirect(url_for("main_route"))
-
-    session.pop('username')
-    response = redirect(url_for("main_route"))
+    username = session.pop('username', None)
+    response = jsonify({"username": username, "message": "logged out"})
     return response
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
     """Login route."""
 
-    # If the user already logged in, redirect him to the main page.
-    if session.get("username", None):
-        return redirect(url_for("main_route"))
+    if 'username' in session:
+        return jsonify({"message": "Already logged in"}), 200
 
     data = request.get_json(silent=True)
     if data is None:
@@ -64,6 +60,9 @@ def deluser():
 @auth_bp.route("/register", methods=["POST"])
 def users():
     """New user."""
+
+    if 'username' in session:
+        return jsonify({"message": "Already logged in"}), 200
     data = request.get_json(silent=True)
     if data is None:
         return jsonify({"message": "missing parameters"}), 400
