@@ -229,6 +229,7 @@ const Container = styled.div<{ dims: number }>`
   background-size: cover; /* Adjust based on your desired look */
   background-repeat: no-repeat;
   filter: brightness(0) invert(1);
+  transform: scale(1.5);
 `;
 
 const Square = styled.div`
