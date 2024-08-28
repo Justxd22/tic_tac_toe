@@ -65,7 +65,6 @@ class Auth:
         """Is valid."""
         u = self.users.find_one({ 'username': username })
         if not u:
-            print("fffff", username)
             return (False, 0)
         try:
             if not bcrypt.checkpw(password.encode('utf-8'), u.get('password').encode('utf-8')):

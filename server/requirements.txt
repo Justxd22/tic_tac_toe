@@ -3,6 +3,7 @@ flask_cors
 bcrypt
 pymongo
 flask-socketio
+Flask-Session
 python-dotenv
 gunicorn
 eventlet
