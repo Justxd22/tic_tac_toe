@@ -21,6 +21,16 @@ const board = new Board();
 interface Props {
   squares?: Array<number | null>;
 }
+interface GameData {
+  player: number;
+  game_id: string;
+}
+
+interface MoveMessage {
+  index: number;
+  player: number;
+}
+
 const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [players, setPlayers] = useState<Record<string, number | null>>({
     human: null,
@@ -32,22 +42,23 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [nextMove, setNextMove] = useState<null | number>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [mode, setMode] = useState(GAME_MODES.medium);
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
   const [gameid, setGameid] = useState<string | null>(null);
 
   useEffect(() => {
     const newSocket = io('http://127.0.0.1:3000', {
-      withCredentials: true, // Send cookies with the connection
-      // transports: ['websocket'], // Optionally specify transports
     });
     setSocket(newSocket);
     newSocket.on('connect', () => {
       console.log('Socket connection established.');
       console.log('Socket ID:', newSocket.id); // Now socket.id should be defined
-  });
-    console.log('Socket connection established.'); // printed twice use effect is fucked lamo fix it 
-    return () => newSocket.close();
+    });
+    console.log('Socket connection established.'); // printed twice use effect is fucked lamo fix it
+    return () => {
+        newSocket.close();
+    };
   }, []);
+
   useEffect(() => {
     if (socket) {
       socket.emit('join_queue');
@@ -58,8 +69,8 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
       //   console.log('GAME_ID', data);
       //   setGameid(data);
       // });
-  
-      socket.on('start_game', (data) => {
+
+      socket.on('start_game', (data: GameData) => {
         console.log('Starting game.....', data);
         setPlayers({ human: data.player, ai: data.player === 1 ? 2 : 1 });
         setGameState(GAME_STATES.inProgress);
@@ -67,15 +78,15 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
         setNextMove(PLAYER_X);
         setGameid(data.game_id);
       });
-  
-      socket.on('move', (msg) => {
+
+      socket.on('move', (msg: MoveMessage) => {
         console.log('SOCKET', msg.index, msg, msg.player === 1 ? 2 : 1);
         move(msg.index, msg.player);
         setNextMove(msg.player === 1 ? 2 : 1);
       });
 
       console.log('Event listeners set up.');
-  
+
       return () => {
         socket.off('start_game');
         socket.off('move');
@@ -181,7 +192,9 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
         index: index,
         game_id: gameid,
       };
-      socket.emit('humanMove', data);
+      if (socket) {
+        socket.emit('humanMove', data);
+      }
 
     }
   };

@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState } from "react";
 import { FaUser, FaLock, FaArrowLeft } from "react-icons/fa";
 import Logo from '../assets/Images/Text_Logo.png';
 import '../assets/stylesheets/Login.css';
@@ -17,14 +17,34 @@ const Login: FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
-        credentials: 'include', // Include credentials to save cookies, only in cross-origin requests
+        // credentials: 'include', // Include credentials to save cookies, only in cross-origin requests
+        credentials: 'same-origin',
       });
 
       const data = await response.json();
 
       if (response.ok) {
         console.log('Login successful:', data);
-        window.location.href = '/tictactoe';
+        // Get the current URL
+        const currentUrl = new URL(window.location.href);
+
+        // Get the 'next' parameter
+        const nextUrl = currentUrl.searchParams.get('next');
+
+        // Check if 'next' parameter exists and is the same origin
+        if (nextUrl) {
+            const nextUrlObj = new URL(nextUrl);
+            if (nextUrlObj.origin === window.location.origin) {
+                // Redirect to the 'next' URL
+                window.location.href = nextUrl;
+            } else {
+                // Redirect to '/tictactoe' if 'next' is not the same origin
+                window.location.href = '/tictactoe';
+            }
+        } else {
+            // Redirect to '/tictactoe' if 'next' does not exist
+            window.location.href = '/tictactoe';
+        }
       } else {
         console.error('Login failed:', data.message);
         alert(`Login failed: ${data.message}`);
