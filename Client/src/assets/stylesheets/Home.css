@@ -29,6 +29,10 @@ a:hover {
 .play-button {
   position: relative;
   display: inline-block;
+  animation-name: floating!important;
+  animation-duration: 2s!important;
+  animation-iteration-count: infinite!important;
+  animation-timing-function: ease-in-out!important;
 }
 
 .icon-container {
@@ -54,4 +58,19 @@ a:hover {
 
 .play-button:hover .play-text {
   opacity: 1;
+}
+
+
+@keyframes floating {
+  0% {
+      transform: translate(0)
+  }
+
+  65% {
+      transform: translateY(15px)
+  }
+
+  to {
+      transform: translate(0)
+  }
 }
