@@ -19,7 +19,8 @@ const Register: FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, username, password }),
-        credentials: 'same-origin',
+        credentials: 'include', // Include credentials to save cookies, only in cross-origin requests
+        // credentials: 'same-origin',
       });
 
       const data = await response.json();

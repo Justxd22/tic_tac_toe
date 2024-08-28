@@ -17,8 +17,8 @@ const Login: FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
-        // credentials: 'include', // Include credentials to save cookies, only in cross-origin requests
-        credentials: 'same-origin',
+        credentials: 'include', // Include credentials to save cookies, only in cross-origin requests
+        // credentials: 'same-origin',
       });
 
       const data = await response.json();

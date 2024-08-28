@@ -42,13 +42,16 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [nextMove, setNextMove] = useState<null | number>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [mode, setMode] = useState(GAME_MODES.medium);
-  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
+  const [socket, setSocket] = useState<ReturnType<typeof io> | null>(null);
   const [gameid, setGameid] = useState<string | null>(null);
 
   useEffect(() => {
     const newSocket = io('http://127.0.0.1:3000', {
+      withCredentials: true,
     });
+
     setSocket(newSocket);
+
     newSocket.on('connect', () => {
       console.log('Socket connection established.');
       console.log('Socket ID:', newSocket.id); // Now socket.id should be defined
