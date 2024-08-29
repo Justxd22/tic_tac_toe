@@ -9,10 +9,11 @@ from middleware import auth_middleware
 # Import your modules
 from multiplayer_socketIO import socketio
 from models.auth import Auth
+from models.user import User
 
 def create_app():
     # Import your modules
-    from api import auth_bp, init_api
+    from api import auth_bp, user_bp, init_api
     from errors import error
     from database import init_db
     from config import get_config
@@ -48,6 +49,7 @@ def create_app():
 
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
+    app.register_blueprint(user_bp, url_prefix='/api/user')
     app.register_blueprint(error)
     app.register_blueprint(web_bp)
 
@@ -59,7 +61,8 @@ def create_app():
 
     # Initialize API
     auth = Auth(app.db)
-    init_api(auth)
+    user = User(app.db)
+    init_api(auth, user)
 
     # Initialize SocketIO
     socketio.init_app(

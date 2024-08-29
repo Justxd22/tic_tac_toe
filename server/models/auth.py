@@ -1,7 +1,7 @@
 """Auth here."""
 import bcrypt
-from uuid import uuid4
 from datetime import datetime
+import regex as re
 
 class Auth:
     """Auth class."""
@@ -25,8 +25,19 @@ class Auth:
                 })
         self.users = self.db['users']
 
+        # Precompile regex patterns using the regex library
+        self.email_regex = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+        self.username_regex = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+
 
     def register_user(self, email: str, username: str, password: str):
+        # Check if email and username are valid
+        if not self.email_regex.match(email):
+            raise ValueError("Invalid email address.")
+        if not self.username_regex.match(username):
+            raise ValueError("Invalid username.")
+
+        # Check if email and username already exist
         e = self.users.find_one({ 'email': email })
         u = self.users.find_one({ 'username': username })
         if u:
@@ -49,16 +60,12 @@ class Auth:
         return user
 
 
-    def deregister_user(self, email: str):
-        e = self.users.find_one({ 'email': email })
-        if not e:
-            raise ValueError(f"User {email} doesn't exist")
-
-        result = self.users.delete_one({'email': email})
+    def deregister_user(self, username: str):
+        result = self.users.delete_one({'username': username})
         if result.deleted_count == 1:
-            return f"User {email} has been deregistered successfully."
+            return f"User {username} has been deregistered successfully."
         else:
-            raise ValueError(f"Failed to deregister user {email}.")
+            raise ValueError(f"Failed to deregister user {username}.")
 
 
     def valid_login(self, username: str, password: str) -> bool:
@@ -72,24 +79,6 @@ class Auth:
         except Exception:
             return (False, 1)
         return (True, 0)
-
-    def get_user_from_session_id(session, self):
-        """Get user based on their session id."""
-        username = session.get('username', None)
-        if not username:
-            return None
-        u = self.users.find_one({ 'username': username })
-        return u
-
-    def update_password(self, session, password: str):
-        """New password."""
-        email = session.get('email', None)
-        if not email:
-            return 404
-        res = self.users.update_one( { 'email': email }, { '$set': { 'password': self.hash_password(password) } })
-        if res > 0:
-            return True
-        return False
 
     @staticmethod
     def hash_password(password: str):

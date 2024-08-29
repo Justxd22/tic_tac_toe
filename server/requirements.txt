@@ -7,3 +7,4 @@ Flask-Session
 python-dotenv
 gunicorn
 eventlet
+regex
