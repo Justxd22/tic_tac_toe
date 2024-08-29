@@ -54,7 +54,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
 
   useEffect(() => {
     const newSocket = io('http://127.0.0.1:3000', {
-      // withCredentials: true,
+      withCredentials: true, // Required for cross-origin socket events
     });
 
     setSocket(newSocket);
