@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   PLAYER_X,
@@ -33,6 +34,7 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
     human: null,
     ai: null,
   });
+  const navigate = useNavigate();
   const [gameState, setGameState] = useState(GAME_STATES.notStarted);
   const [grid, setGrid] = useState(squares);
   const [winner, setWinner] = useState<string | null>(null);
@@ -183,6 +185,11 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
     }
   }, [gameState]);
 
+  const handleClose = () => {
+    setModalOpen(false);
+    navigate('/');
+  }
+
   return gameState === GAME_STATES.notStarted ? (
     <div>
       <Inner>
@@ -230,7 +237,7 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
       <ResultModal
         isOpen={modalOpen}
         winner={winner}
-        close={() => setModalOpen(false)}
+        close={handleClose}
         startNewGame={startNewGame}
       />
     </Container>
