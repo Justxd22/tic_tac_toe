@@ -18,13 +18,33 @@ const Login: FC = () => {
         },
         body: JSON.stringify({ username, password }),
         credentials: 'include', // Include credentials to save cookies, only in cross-origin requests
+        // credentials: 'same-origin', only for same-origin requests
       });
 
       const data = await response.json();
 
       if (response.ok) {
         console.log('Login successful:', data);
-        window.location.href = '/tictactoe';
+                // Get the current URL
+        const currentUrl = new URL(window.location.href);
+
+        // Get the 'next' parameter
+        const nextUrl = currentUrl.searchParams.get('next');
+
+        // Check if 'next' parameter exists and is the same origin
+        if (nextUrl) {
+            const nextUrlObj = new URL(nextUrl);
+            if (nextUrlObj.origin === window.location.origin) {
+                // Redirect to the 'next' URL
+                window.location.href = nextUrl;
+            } else {
+                // Redirect to '/tictactoe' if 'next' is not the same origin
+                window.location.href = '/';
+            }
+        } else {
+            // Redirect to '/tictactoe' if 'next' does not exist
+            window.location.href = '/modes';
+        }
       } else {
         console.error('Login failed:', data.message);
         alert(`Login failed: ${data.message}`);
