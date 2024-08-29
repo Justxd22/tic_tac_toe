@@ -14,6 +14,13 @@ import { getRandomInt, switchPlayer } from "./utils";
 import { minimax } from "./minimax";
 import { ResultModal } from "./ResultModal";
 import { border } from "./styles";
+import gameOverSoundAsset from "../../assets/sounds/game_over.wav";
+import clickSoundAsset from "../../assets/sounds/click.wav";
+
+const gameOverSound = new Audio(gameOverSoundAsset);
+gameOverSound.volume = 0.2;
+const clickSound = new Audio(clickSoundAsset);
+clickSound.volume = 0.5;
 
 const arr = new Array(DIMENSIONS ** 2).fill(null);
 const board = new Board();
@@ -163,6 +170,18 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
   const changeMode = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setMode(e.target.value);
   };
+
+  useEffect(() => {
+    if (nextMove !== null) {
+      clickSound.play();
+    }
+  }, [nextMove]);
+  
+  useEffect(() => {
+    if (gameState !== GAME_STATES.inProgress) {
+      gameOverSound.play();
+    }
+  }, [gameState]);
 
   return gameState === GAME_STATES.notStarted ? (
     <div>
