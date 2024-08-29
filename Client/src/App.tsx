@@ -7,6 +7,7 @@ import "tailwindcss/base.css"
 import "tailwindcss/components.css"
 import "tailwindcss/utilities.css"
 import Home from "./components/Home";
+import Modes from "./components/Modes";
 import TicTacToe_ai from "./components/TTT_ai/TicTacToe_ai";
 import TicTacToe_multi from "./components/TTT_Multi/TicTacToe_multi";
 
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/modes" element={<Modes />} />
         <Route path="/register" element={<Register />} />
         <Route path="/tictactoe" element={<TicTacToe />} />
         <Route path="/ttt_ai" element={<TicTacToe_ai />} />
