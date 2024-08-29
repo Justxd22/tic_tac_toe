@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import TicTacToe from "./components/Game/TicTacToe";
+import TicTacToe_Local from "./components/TTT_Local/TicTacToe_Local";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import "./App.css";
@@ -22,7 +22,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/modes" element={<Modes />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/tictactoe" element={<TicTacToe />} />
+        <Route path="/tictactoe" element={<TicTacToe_Local />} />
         <Route path="/ttt_ai" element={<TicTacToe_ai />} />
         <Route path="/ttt_multi" element={<TicTacToe_multi />} />
       </Routes>

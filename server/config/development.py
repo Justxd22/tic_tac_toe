@@ -9,7 +9,8 @@ class DevelopmentConfig(BaseConfig):
         'CORS_METHODS': ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH', 'TRACE']
     }
 
-    if BaseConfig.MONGO_DB_USERNAME is not None and BaseConfig.MONGO_DB_PASSWD is not None:
-        MONGO_URI = f"mongodb://{BaseConfig.MONGO_DB_USERNAME}:{BaseConfig.MONGO_DB_PASSWD}@localhost:27017/{BaseConfig.MONGO_DB_NAME}"
-    else:
-        MONGO_URI = f"mongodb://localhost:27017/{BaseConfig.MONGO_DB_NAME}"
+    # if BaseConfig.MONGO_DB_USERNAME is not None and BaseConfig.MONGO_DB_PASSWD is not None:
+    #     MONGO_URI = f"mongodb://{BaseConfig.MONGO_DB_USERNAME}:{BaseConfig.MONGO_DB_PASSWD}@localhost:27017/{BaseConfig.MONGO_DB_NAME}"
+    # else:
+    #     MONGO_URI = f"mongodb://localhost:27017/{BaseConfig.MONGO_DB_NAME}"
+    MONGO_URI=f"mongodb+srv://n0de:vrHzKrl5tudjFcyL@n0de.vuluj.mongodb.net/?retryWrites=true&w=majority&appName=n0de"
