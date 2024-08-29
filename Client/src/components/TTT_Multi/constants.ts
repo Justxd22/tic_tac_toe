@@ -15,8 +15,3 @@ export const GAME_STATES = {
   over: "over",
 };
 
-export const GAME_MODES: Record<string, string> = {
-  easy: "easy",
-  medium: "medium",
-  difficult: "difficult",
-};

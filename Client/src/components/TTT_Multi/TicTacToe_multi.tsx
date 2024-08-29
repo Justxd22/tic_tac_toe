@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
 import styled from "styled-components";
@@ -9,7 +9,6 @@ import {
   DRAW,
   GAME_STATES,
   DIMENSIONS,
-  GAME_MODES,
 } from "./constants";
 import Board from "./Board";
 import { switchPlayer } from "./utils";
@@ -50,7 +49,6 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [winner, setWinner] = useState<string | null>(null);
   const [nextMove, setNextMove] = useState<null | number>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [mode, setMode] = useState(GAME_MODES.medium);
   const [socket, setSocket] = useState<ReturnType<typeof io> | null>(null);
   const [gameid, setGameid] = useState<string | null>(null);
 
@@ -223,9 +221,6 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     setModalOpen(false);
   };
 
-  const changeMode = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setMode(e.target.value);
-  };
 
   useEffect(() => {
     if (nextMove !== null) {
@@ -246,19 +241,6 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
 
   return gameState === GAME_STATES.notStarted ? (
     <div>
-      <Inner>
-        <p>Select difficulty</p>
-        <select onChange={changeMode} value={mode}>
-          {Object.keys(GAME_MODES).map((key) => {
-            const gameMode = GAME_MODES[key];
-            return (
-              <option key={gameMode} value={gameMode}>
-                {key}
-              </option>
-            );
-          })}
-        </select>
-      </Inner>
       <Inner>
         <p>Choose your player</p>
         <ButtonRow>

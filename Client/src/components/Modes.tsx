@@ -36,7 +36,7 @@ const Modes: FC = () => {
             id="value-2" 
             name="btn" 
             className="input"
-            onChange={() => handleModeSelect('/')}
+            onChange={() => handleModeSelect('/ttt_multi')}
           />
           <div className="btn">
             <span aria-hidden="true">Online</span>
