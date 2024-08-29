@@ -145,7 +145,7 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
       // Delay AI moves to make them more natural
       timeout = setTimeout(() => {
         aiMove();
-      }, 1000);
+      }, 250);
     }
     return () => timeout && clearTimeout(timeout);
   }, [nextMove, aiMove, players.ai, gameState]);
