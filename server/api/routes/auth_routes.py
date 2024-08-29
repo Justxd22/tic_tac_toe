@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, redirect, url_for, session
+from flask import Blueprint, jsonify, request, session
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -12,6 +12,8 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route("/logout", methods=["DELETE"])
 def logout():
     """Logout route."""
+    if 'username' not in session:
+        return jsonify({"message": "Not logged in"}), 400
 
     username = session.pop('username', None)
     response = jsonify({"username": username, "message": "logged out"})
@@ -43,18 +45,13 @@ def login():
 @auth_bp.route("/deregister", methods=["POST"])
 def deluser():
     """Del user."""
-    data = request.get_json(silent=True)
-    if not data:
-        return jsonify({"message": "missing parameters"}), 400
-    email = data.get("email")
-    if not email:
-        return jsonify({"message": "email missing"}), 400
+    user = session.get('username', None)
     try:
-        AUTH.deregister_user(email)
+        msg = AUTH.deregister_user(user)
         session.pop('username', None)
-        return jsonify({"email": email, "message": "Deleted"})
-    except ValueError:
-        return jsonify({"message": "something went wrong"}), 400
+        return jsonify({"username": user, "message": msg})
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
 
 
 @auth_bp.route("/register", methods=["POST"])
@@ -73,8 +70,8 @@ def users():
     try:
         AUTH.register_user(email, username, password)
         return jsonify({"email": email, "message": "user created"})
-    except ValueError:
-        return jsonify({"message": "email already registered"}), 400
+    except ValueError as err:
+        return jsonify({"message": str(err)}), 400
 
 def init_auth_routes(auth):
     global AUTH
