@@ -72,6 +72,14 @@ def users():
         return jsonify({"email": email, "message": "user created"})
     except ValueError as err:
         return jsonify({"message": str(err)}), 400
+        
+@auth_bp.route("/api/auth/check-session", methods=["GET"])
+def check_session():
+    """Check session status."""
+    if 'username' in session:
+        return jsonify({"message": True}), 200
+    else:
+        return jsonify({"message": False}), 400
 
 def init_auth_routes(auth):
     global AUTH
