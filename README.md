@@ -208,6 +208,7 @@ Configuration settings are managed in `config.py`. Different configurations are 
 - Ahmed Aboalesaad - [GitHub](https://github.com/Ahmed-Aboalasaad) / [Twitter](https://x.com/Aboalesaad_) / [LinkedIn](https://www.linkedin.com/in/ahmed-aboalesaad/)
 - Zakaria Aaichaou - [GitHub](https://github.com/Z-Sitawi) / [Twitter]() / [LinkedIn](https://www.linkedin.com/in/zakaria-aaichaou-%F0%9F%87%B5%F0%9F%87%B8-842983270/)
 - Abdelrahman Mohamed - [GitHub](https://github.com/hackerSa3edy) / [Twitter](https://x.com/hackersa3edy) / [LinkedIn](https://linkedin.com/abdelrahmanm0)
+- Kedir Jabir - [GitHub](https://github.com/IbnuJabir) / [Twitter](https://x.com/Ibnu_J1) / [LinkedIn](https://www.linkedin.com/in/ibnu-jabir/)
 
 ## License
 
