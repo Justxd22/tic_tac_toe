@@ -37,6 +37,7 @@ class User:
         self._update_score(username, 1)
 
     def update_username(self, username, new_username):
+        '''Updates username to new_username.'''
         # Check if new_username is valid
         if not self.username_regex.match(new_username):
             raise ValueError("Invalid username.")
