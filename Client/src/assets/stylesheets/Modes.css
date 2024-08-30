@@ -252,3 +252,14 @@ body {
   left: 81%;
   line-height: 6.2px;
 }
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .radio-wrapper {
+    margin: 0;
+  }
+}
