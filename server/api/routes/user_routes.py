@@ -135,6 +135,7 @@ def update_data():
     data = request.get_json(silent=True)
     if data is None:
         return jsonify({"message": "missing parameters"}), 400
+    print("DATTAA\n\n\n", data)
     win = data.get('win', None)
     lose = data.get('lose', None)
     draw = data.get('draw', None)

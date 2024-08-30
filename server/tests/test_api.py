@@ -20,9 +20,9 @@ if login_response.status_code == 200:
     # Get the session cookie
     cookies = login_response.cookies
 
-    def test_route(method, route, base_url, cookies, headers):
+    def test_route(method, route, base_url, cookies, headers, data=None):
         url = f"{base_url}{route}"
-        response = requests.request(method, url, cookies=cookies, headers=headers)
+        response = requests.request(method, url, cookies=cookies, headers=headers, json=data)
 
         # Print the response
         print(route, response.status_code, response.text)
@@ -33,6 +33,8 @@ if login_response.status_code == 200:
         test_route('GET', '/api/user/profile', base_url, cookies, headers)
         test_route('PUT', '/api/user/profile', base_url, cookies, headers)
         test_route('POST', '/api/user/update_password', base_url, cookies, headers)
+        json_data = {"win": True}
+        test_route('POST', '/api/user/update_data', base_url, cookies, headers, data=json_data)
         # and so on for other routes
     else:
         print("Login failed")
