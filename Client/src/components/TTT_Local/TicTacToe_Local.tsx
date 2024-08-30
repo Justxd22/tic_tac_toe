@@ -135,10 +135,10 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
 
   return gameState === GAME_STATES.notStarted ? (
     <div>
-      <PulsatingButton 
-      children="Start"
-      onClick={startGame}
-      className="font-bold transform transition-transform duration-300 hover:scale-105 hover:bg-gray-200"
+      <PulsatingButton
+        children="Start"
+        onClick={startGame}
+        className="font-bold transform transition-transform duration-300 hover:scale-105 hover:bg-gray-200"
       />
     </div>
   ) : (
@@ -177,8 +177,9 @@ const Container = styled.div<{ dims: number }>`
   width: ${({ dims }) => `${dims * (SQUARE_DIMS + 5)}px`};
   flex-flow: wrap;
   position: relative;
+  font-family: "Aberus", sans-serif; /* Apply the font here */
   color: white;
-  background-image: url('assets/board.png'); /* Add your image path here */
+  background-image: url("src/assets/Images/board.png"); /* Add your image path here */
   background-size: cover; /* Adjust based on your desired look */
   background-repeat: no-repeat;
   filter: brightness(0) invert(1);
