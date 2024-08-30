@@ -290,26 +290,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
 
   return gameState === GAME_STATES.notStarted ? (
     <div className="text-white font-newrocker">
-      <div className="space-y-4">
-        <div>
-          <p className="mb-2 text-lg font-semibold">Choose your player</p>
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => choosePlayer(PLAYER_X)}
-              className="bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              X
-            </button>
-            <p className="text-lg font-semibold">or</p>
-            <button
-              onClick={() => choosePlayer(PLAYER_O)}
-              className="bg-red-500 text-white px-6 py-2 rounded-md font-bold hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              O
-            </button>
-          </div>
-        </div>
-      </div>
+      <p>Waiting For Opponent</p>
     </div>
   ) : (
     <>
