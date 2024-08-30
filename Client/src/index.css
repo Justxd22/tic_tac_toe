@@ -1,14 +1,37 @@
+@font-face {
+  font-family: "CoastRedwood";
+  src: local("coast-redwood"),
+    url("./assets/Fonts/coast-redwood.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "ArtNouveauCaps";
+  src: local("ArtNouveauCaps"),
+    url("./assets/Fonts/ArtNouveauCaps.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Aberus";
+  src: local("aberus-regular"),
+    url("./assets/Fonts/aberus-regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "WoodCarving";
+  src: local("Wood-Carving"),
+    url("./assets/Fonts/Wood\ Carving.ttf") format("truetype");
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
