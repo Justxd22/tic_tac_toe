@@ -247,7 +247,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
       losses: !isHumanWinner && !isDraw,
       draws: isDraw,
     };
-
+    console.log("New Use Stat:", updateData);
     try {
       const response = await fetch("/api/user/update_data", {
         method: "POST",
