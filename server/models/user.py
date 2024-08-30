@@ -23,6 +23,7 @@ class User:
         self._update_score(username, 3)
 
     def increment_losses(self, username):
+        '''Increments the loses of the given username by one.'''
         user = self.users.find_one({'username': username})
         if user['score'] >= 3:
             self._update_score(username, -3)
