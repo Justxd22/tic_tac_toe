@@ -136,9 +136,9 @@ def update_data():
     if data is None:
         return jsonify({"message": "missing parameters"}), 400
     print("DATTAA\n\n\n", data)
-    win = data.get('win', None)
-    lose = data.get('lose', None)
-    draw = data.get('draw', None)
+    win = data.get('wins', None)
+    lose = data.get('losses', None)
+    draw = data.get('draws', None)
 
     username = session.get('username')
     try:
