@@ -73,7 +73,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     const fetchUserProfile = async () => {
       try {
         const response = await fetch(
-          "https://tictactoe-production-f0a0.up.railway.app/api/user/profile",
+          "/api/user/profile",
           {
             method: "GET",
             headers: {
@@ -318,19 +318,21 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     <>
       <div className="w-[10rem]">
         {userInfo ? (
-          <div className="absolute top-[2%] right-[15%] w-[70%] py-4 px-10 grid grid-cols-2 gap-4 items-center justify-between bg-slate-700 rounded-md">
-            <p className="font-bold text-white text-xl">
-              Games Played: {userInfo.game_played}
-            </p>
-            <p className="font-bold text-white text-xl">
-              Wins: {userInfo.wins}
-            </p>
-            <p className="font-bold text-white text-xl">
-              Losses: {userInfo.losses}
-            </p>
-            <p className="font-bold text-white text-xl">
-              Draws: {userInfo.draws}
-            </p>
+          <div className="flex justify-center items-center w-screen">
+            <div className="absolute top-[2%] w-[35%] py-4 px-10 text-center grid grid-cols-2 gap-4 items-center justify-around bg-slate-700 rounded-md">
+              <p className="font-bold text-white text-xl">
+                Games Played: {userInfo.game_played}
+              </p>
+              <p className="font-bold text-white text-xl">
+                Wins: {userInfo.wins}
+              </p>
+              <p className="font-bold text-white text-xl">
+                Losses: {userInfo.losses}
+              </p>
+              <p className="font-bold text-white text-xl">
+                Draws: {userInfo.draws}
+              </p>
+            </div>
           </div>
         ) : (
           <p>Loading user information...</p>
@@ -372,12 +374,19 @@ const Container = styled.div<{ dims: number }>`
   width: ${({ dims }) => `${dims * (SQUARE_DIMS + 5)}px`};
   flex-flow: wrap;
   position: relative;
+  font-family: "WoodCarving", sans-serif; /* Apply the font here */
+  font-weight: bold;
   color: white;
   background-image: url(${boardImage});
   background-size: cover; /* Adjust based on your desired look */
   background-repeat: no-repeat;
   filter: brightness(0) invert(1);
   transform: scale(1.5);
+
+  /* Media query for mobile screens */
+  @media (max-width: 768px) {
+    transform: scale(1);
+  }
 `;
 
 const Square = styled.div`
