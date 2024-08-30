@@ -196,7 +196,7 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     <>
       {userInfo ? (
         <div className="flex justify-center items-center w-screen">
-          <div className="absolute top-[2%] sm:w-[70%] md:w-[35%] py-4 px-10 text-center bg-opacity-25 rounded-full rounded-full grid grid-cols-2 gap-4 items-center justify-around bg-slate-700 rounded-md">
+          <div className="absolute top-[2%] sm:w-[70%] md:w-[35%] py-4 px-10 text-center bg-opacity-50 rounded-full rounded-full grid grid-cols-2 gap-4 items-center justify-around bg-slate-700">
             <p className="font-bold text-white text-xl">
               Games Played: {userInfo.game_played}
             </p>
