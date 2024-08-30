@@ -291,7 +291,7 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
     <>
       {userInfo ? (
         <div className="flex justify-center items-center w-screen">
-          <div className="absolute top-[2%] w-[35%] py-4 px-10 text-center grid grid-cols-2 gap-4 items-center justify-around bg-slate-700 rounded-md">
+          <div className="absolute top-[2%] w-[35%] md:w-[70%] py-4 px-10 text-center grid grid-cols-2 gap-4 items-center justify-around bg-slate-700 rounded-md">
             <p className="font-bold text-white text-xl">
               Games Played: {userInfo.game_played}
             </p>
