@@ -1,4 +1,4 @@
-# Tic-Tac-Toe Game (NOT yet completed)
+# Tic-Tac-Toe Game
 
 ![s1](Client/src/assets/Images/Text_Logo.png)
 
@@ -47,7 +47,7 @@ This project is a multiplayer Tic-Tac-Toe game implemented using Flask for the b
 - Backend: Flask (Python)
 - Database: MongoDB
 - Real-time Communication: Socket.IO
-- Frontend: HTML, CSS, JavaScript (details may vary based on your implementation)
+- Frontend: React, Typescript
 - Authentication: Flask sessions
 - WSGI Server: Gunicorn
 - Web Server: Nginx (for production deployment)
