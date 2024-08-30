@@ -194,7 +194,6 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     </div>
   ) : (
     <>
-      <div className="w-[10rem]">
         {userInfo ? (
           <div className="flex justify-center items-center w-screen">
             <div className="absolute top-[2%] w-[35%] py-4 px-10 text-center grid grid-cols-2 gap-4 items-center justify-around bg-slate-700 rounded-md">
@@ -212,7 +211,9 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
               </p>
             </div>
           </div>
-      </div>
+        ) : (
+          <p>Loading Info</p>
+        )}
       <Container dims={DIMENSIONS}>
         {grid.map((value, index) => {
           const isActive = value !== null;
