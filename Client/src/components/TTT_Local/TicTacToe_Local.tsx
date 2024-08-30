@@ -61,18 +61,15 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     // Fetch user profile when the component mounts
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch(
-          "/api/user/profile",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              // Add other headers if needed, e.g., Authorization
-            },
-            credentials: "include", // Include credentials if your session management requires it
-          }
-        );
+        const response = await fetch("/api/user/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            // Add other headers if needed, e.g., Authorization
+          },
+          credentials: "include", // Include credentials if your session management requires it
+        });
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -199,19 +196,21 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     <>
       <div className="w-[10rem]">
         {userInfo ? (
-          <div className="absolute top-[2%] right-[15%] w-[70%] py-4 px-10 grid grid-cols-2 gap-4 items-center justify-between bg-slate-700 rounded-md">
-            <p className="font-bold text-white text-xl">
-              Games <br /> Played: 0
-            </p>
-            <p className="font-bold text-white text-xl">
-              Wins: 0
-            </p>
-            <p className="font-bold text-white text-xl">
-              Losses: 0
-            </p>
-            <p className="font-bold text-white text-xl">
-              Draws: 0
-            </p>
+          <div className="flex justify-center items-center w-screen">
+            <div className="absolute top-[2%] w-[35%] py-4 px-10 text-center grid grid-cols-2 gap-4 items-center justify-around bg-slate-700 rounded-md">
+              <p className="font-bold text-white text-xl">
+                Games Played: {userInfo.game_played}
+              </p>
+              <p className="font-bold text-white text-xl">
+                Wins: {userInfo.wins}
+              </p>
+              <p className="font-bold text-white text-xl">
+                Losses: {userInfo.losses}
+              </p>
+              <p className="font-bold text-white text-xl">
+                Draws: {userInfo.draws}
+              </p>
+            </div>
           </div>
       </div>
       <Container dims={DIMENSIONS}>
@@ -258,6 +257,11 @@ const Container = styled.div<{ dims: number }>`
   background-repeat: no-repeat;
   filter: brightness(0) invert(1);
   transform: scale(1.5);
+
+  /* Media query for mobile screens */
+  @media (max-width: 768px) {
+    transform: scale(1);
+  }
 `;
 
 const Square = styled.div`
