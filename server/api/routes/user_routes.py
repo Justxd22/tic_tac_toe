@@ -126,6 +126,32 @@ def update_draws():
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
 
+@user_bp.route("/update_data", methods=["POST"])
+def update_data():
+    """Update draws."""
+    if 'username' not in session:
+        return jsonify({"message": "Not logged in"}), 400
+
+    data = request.get_json(silent=True)
+    if data is None:
+        return jsonify({"message": "missing parameters"}), 400
+    win = data.get('win', None)
+    lose = data.get('lose', None)
+    draw = data.get('draw', None)
+
+    username = session.get('username')
+    try:
+        if win:
+            USER.increment_wins(username)
+        elif lose:
+            USER.increment_losses(username)
+        elif draw:
+            USER.increment_draws(username)
+
+        return jsonify({"message": "data updated"})
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
+
 
 # @user_bp.route("/user_avatar", methods=["PUT"])
 # def update_user_avatar():
