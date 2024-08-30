@@ -62,18 +62,15 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
     // Fetch user profile when the component mounts
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch(
-          "/api/user/profile",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              // Add other headers if needed, e.g., Authorization
-            },
-            credentials: "include", // Include credentials if your session management requires it
-          }
-        );
+        const response = await fetch("/api/user/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            // Add other headers if needed, e.g., Authorization
+          },
+          credentials: "include", // Include credentials if your session management requires it
+        });
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -292,28 +289,26 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
     </div>
   ) : (
     <>
-      <div className="w-[10rem]">
-        {userInfo ? (
-          <div className="flex justify-center items-center w-screen">
-            <div className="absolute top-[2%] w-[35%] py-4 px-10 text-center grid grid-cols-2 gap-4 bg-opacity-40 items-center justify-around bg-slate-700 rounded-md">
-              <p className="font-bold text-white text-xl">
-                Games Played: {userInfo.game_played}
-              </p>
-              <p className="font-bold text-white text-xl">
-                Wins: {userInfo.wins}
-              </p>
-              <p className="font-bold text-white text-xl">
-                Losses: {userInfo.losses}
-              </p>
-              <p className="font-bold text-white text-xl">
-                Draws: {userInfo.draws}
-              </p>
-            </div>
+      {userInfo ? (
+        <div className="flex justify-center items-center w-screen">
+          <div className="absolute top-[2%] w-[35%] py-4 px-10 text-center grid grid-cols-2 gap-4 items-center justify-around bg-slate-700 rounded-md">
+            <p className="font-bold text-white text-xl">
+              Games Played: {userInfo.game_played}
+            </p>
+            <p className="font-bold text-white text-xl">
+              Wins: {userInfo.wins}
+            </p>
+            <p className="font-bold text-white text-xl">
+              Losses: {userInfo.losses}
+            </p>
+            <p className="font-bold text-white text-xl">
+              Draws: {userInfo.draws}
+            </p>
           </div>
-        ) : (
-          <p>Loading user information...</p>
-        )}
-      </div>
+        </div>
+      ) : (
+        <p>Loading user information...</p>
+      )}
 
       <Container dims={DIMENSIONS}>
         {grid.map((value, index) => {
