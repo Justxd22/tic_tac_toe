@@ -1,6 +1,6 @@
 # Tic-Tac-Toe Game (NOT yet completed)
 
-![s1](.assets/logo.png)
+![s1](Client/src/assets/Images/Text_Logo.png)
 
 ## Live
 
@@ -9,7 +9,9 @@
 
 ## Screenshots
 ![s1](.assets/s1.png)
+
 ![s2](.assets/s2.png)
+
 ![s3](.assets/s3.png)
 
 ## Table of Contents
