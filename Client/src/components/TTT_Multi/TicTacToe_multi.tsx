@@ -214,6 +214,11 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     setGameState(GAME_STATES.notStarted);
     setGrid(arr);
     setModalOpen(false);
+  
+    if (socket) {
+      socket.emit("join_queue");
+      console.log("Rejoining queue...");
+    }
   };
 
   useEffect(() => {
