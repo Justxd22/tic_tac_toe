@@ -316,7 +316,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     </div>
   ) : (
     <>
-      <div className="w-[20rem]">
+      <div className="w-[10rem]">
         {userInfo ? (
           <div className="absolute top-[2%] right-[3%] w-[70%] py-4 px-10 grid grid-cols-2 gap-4 items-center justify-between bg-slate-700 rounded-md">
             <p className="font-bold text-white text-xl">
