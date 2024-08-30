@@ -259,11 +259,11 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     }
   };
 
-  const choosePlayer = (option: number) => {
-    setPlayers({ human: option, ai: switchPlayer(option) });
-    setGameState(GAME_STATES.inProgress);
-    setNextMove(PLAYER_X);
-  };
+  // const choosePlayer = (option: number) => {
+  //   setPlayers({ human: option, ai: switchPlayer(option) });
+  //   setGameState(GAME_STATES.inProgress);
+  //   setNextMove(PLAYER_X);
+  // };
 
   const startNewGame = () => {
     setGameState(GAME_STATES.notStarted);
