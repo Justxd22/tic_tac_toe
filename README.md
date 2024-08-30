@@ -6,6 +6,8 @@
 
 - [tictactoe-production-f0a0.up.railway.app](https://tictactoe-production-f0a0.up.railway.app/)
 - [tic-tac-toe.s1cario.tech:3000](http://tic-tac-toe.s1cario.tech:3000)
+- [tic-tac-toe_Sample_video](https://youtu.be/Q6p1YYc5SZM)
+
 
 ## Screenshots
 ![s1](.assets/s1.png)
