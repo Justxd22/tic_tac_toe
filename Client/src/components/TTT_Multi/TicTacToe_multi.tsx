@@ -250,7 +250,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
 
     try {
       const response = await fetch("/api/user/update_data", {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
