@@ -11,23 +11,19 @@ import {
   DIMENSIONS,
 } from "./constants";
 import Board from "./Board";
-import { switchPlayer } from "./utils";
 import { ResultModal } from "./ResultModal";
 import { border } from "./styles";
 import gameOverSoundAsset from "../../assets/sounds/game_over.wav";
 import clickSoundAsset from "../../assets/sounds/click.wav";
 import boardImage from "../../assets/Images/board.png";
 
-// Define the shape of userInfo based on your API response
 interface UserInfo {
   game_played: number;
   wins: number;
   losses: number;
   draws: number;
-  // Add other fields as necessary
 }
 
-// Define the type for error
 type ErrorType = string | null;
 
 const gameOverSound = new Audio(gameOverSoundAsset);
@@ -68,8 +64,8 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [error, setError] = useState<ErrorType>(null);
   console.log(error || "NO errors");
+
   useEffect(() => {
-    // Fetch user profile when the component mounts
     const fetchUserProfile = async () => {
       try {
         const response = await fetch("/api/user/profile", {
@@ -77,9 +73,8 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            // Add other headers if needed, e.g., Authorization
           },
-          credentials: "include", // Include credentials if your session management requires it
+          credentials: "include",
         });
 
         if (!response.ok) {
@@ -105,16 +100,16 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
 
   useEffect(() => {
     const newSocket = io("/", {
-      withCredentials: true, // Required for cross-origin socket events
+      withCredentials: true,
     });
 
     setSocket(newSocket);
 
     newSocket.on("connect", () => {
       console.log("Socket connection established.");
-      console.log("Socket ID:", newSocket.id); // Now socket.id should be defined
+      console.log("Socket ID:", newSocket.id);
     });
-    console.log("Socket connection established."); // printed twice use effect is fucked lamo fix it
+
     return () => {
       newSocket.close();
     };
@@ -124,18 +119,11 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     if (socket) {
       socket.emit("join_queue");
       console.log("joined queue waiting.....");
-      console.log(socket.id);
-
-      // socket.on('game_id', (data) => {
-      //   console.log('GAME_ID', data);
-      //   setGameid(data);
-      // });
 
       socket.on("start_game", (data: GameData) => {
         console.log("Starting game.....", data);
         setPlayers({ human: data.player, ai: data.player === 1 ? 2 : 1 });
         setGameState(GAME_STATES.inProgress);
-        console.log("STATTEEEEEE", gameState, GAME_STATES.inProgress); // see this line in console i set it to started but it's not started lol
         setNextMove(PLAYER_X);
         setGameid(data.game_id);
       });
@@ -146,8 +134,6 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
         setNextMove(msg.player === 1 ? 2 : 1);
       });
 
-      console.log("Event listeners set up.");
-
       return () => {
         socket.off("start_game");
         socket.off("move");
@@ -155,9 +141,6 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     }
   }, [socket]);
 
-  /**
-   * On every move, check if there is a winner. If yes, set game state to over and open result modal
-   */
   useEffect(() => {
     const boardWinner = board.getWinner(grid);
 
@@ -176,8 +159,12 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
       }
       setGameState(GAME_STATES.over);
       setWinner(winnerStr);
-      // Slight delay for the modal so there is some time to see the last move
       setTimeout(() => setModalOpen(true), 300);
+
+      // Update user stats
+      if (players.human !== null) {
+        updateUserStats(winner);
+      }
     };
 
     if (boardWinner !== null && gameState !== GAME_STATES.over) {
@@ -185,17 +172,10 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     }
   }, [gameState, grid, nextMove]);
 
-  /**
-   * Set the grid square with respective player that made the move. Only make a move when the game is in progress.
-   * useCallback is necessary to prevent unnecessary recreation of the function, unless gameState changes, since it is
-   * being tracked in useEffect
-   * @type {Function}
-   */
   const move = useCallback(
     (index: number, player: number | null) => {
       console.log("MOVE", index, player, gameState);
       if (player !== null || gameState === GAME_STATES.inProgress) {
-        // changed to or to disable states check
         console.log("MOVE_VALIDDDDD", index, player);
         setGrid((grid) => {
           const gridCopy = grid.concat();
@@ -207,47 +187,12 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     [gameState]
   );
 
-  // useEffect(() => {
-  //   if (socket) {
-  //     const handleBackendAI = (msg: any) => {
-  //       console.log('SOCKET', msg.index, msg);
-
-  //       const index = msg.index;
-
-  //       if (index !== null && !grid[index]) {
-  //         if (players.ai !== null) {
-  //           move(index, players.ai);
-  //         }
-  //         setNextMove(players.human);
-  //       }
-  //     };
-
-  //     socket.on('backendAI', handleBackendAI);
-
-  //     return () => {
-  //       socket.off('backendAI', handleBackendAI);
-  //     };
-  //   }
-  // }, [socket, grid, players.ai, players.human, move]);
-  /**
-   * Make AI move when it's AI's turn
-   */
-  // useEffect(() => {
-  //   if (
-  //     nextMove !== null &&
-  //     nextMove === players.ai &&
-  //     gameState !== GAME_STATES.over
-  //   ) {
-  //     // AI move will trigger socket move
-  //     // No need to call socketMove here; it's handled in the useEffect above
-  //   }
-  // }, [nextMove, players.ai, gameState]);
-
   const humanMove = (index: number) => {
     if (!grid[index] && nextMove === players.human) {
       move(index, players.human);
       setNextMove(players.ai);
-      console.log("HUMAN", index); // SEND TO SOCKETS // 1 is X,  0 is O
+      console.log("HUMAN", index);
+
       const data = {
         player: players.human,
         index: index,
@@ -286,6 +231,44 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
   const handleClose = () => {
     setModalOpen(false);
     navigate("/");
+  };
+
+  // Function to update user stats
+  const updateUserStats = async (winner: number) => {
+    if (!userInfo) return;
+
+    const isHumanWinner =
+      (players.human === PLAYER_X && winner === PLAYER_X) ||
+      (players.human === PLAYER_O && winner === PLAYER_O);
+    const isDraw = winner === DRAW;
+
+    const updateData = {
+      wins: isHumanWinner,
+      losses: !isHumanWinner && !isDraw,
+      draws: isDraw,
+    };
+
+    try {
+      const response = await fetch("/api/user/update_data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(updateData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update user stats");
+      }
+
+      const data = await response.json();
+      setUserInfo(data);
+      console.log("User stats updated:", data);
+    } catch (error) {
+      console.error("Error updating user stats:", error);
+    }
   };
 
   return gameState === GAME_STATES.notStarted ? (
@@ -350,16 +333,15 @@ const Container = styled.div<{ dims: number }>`
   width: ${({ dims }) => `${dims * (SQUARE_DIMS + 5)}px`};
   flex-flow: wrap;
   position: relative;
-  font-family: "WoodCarving", sans-serif; /* Apply the font here */
+  font-family: "WoodCarving", sans-serif;
   font-weight: bold;
   color: white;
   background-image: url(${boardImage});
-  background-size: cover; /* Adjust based on your desired look */
+  background-size: cover;
   background-repeat: no-repeat;
   filter: brightness(0) invert(1);
   transform: scale(1.5);
 
-  /* Media query for mobile screens */
   @media (max-width: 768px) {
     transform: scale(1);
   }
