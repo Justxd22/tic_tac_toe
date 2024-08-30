@@ -33,7 +33,7 @@ if login_response.status_code == 200:
         test_route('GET', '/api/user/profile', base_url, cookies, headers)
         test_route('PUT', '/api/user/profile', base_url, cookies, headers)
         test_route('POST', '/api/user/update_password', base_url, cookies, headers)
-        json_data = {"win": True}
+        json_data = {"wins": True}
         test_route('POST', '/api/user/update_data', base_url, cookies, headers, data=json_data)
         # and so on for other routes
     else:
