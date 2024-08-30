@@ -92,7 +92,7 @@ def update_wins():
 
 
 @user_bp.route("/update_losses", methods=["POST"])
-def update_wins():
+def update_losses():
     """Update losses."""
     if 'username' not in session:
         return jsonify({"message": "Not logged in"}), 400
@@ -110,7 +110,7 @@ def update_wins():
     
 
 @user_bp.route("/update_draws", methods=["POST"])
-def update_wins():
+def update_draws():
     """Update draws."""
     if 'username' not in session:
         return jsonify({"message": "Not logged in"}), 400
