@@ -36,7 +36,6 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: "Aberus", sans-serif; /* Apply the font here */
   height: 100%;
 }
 

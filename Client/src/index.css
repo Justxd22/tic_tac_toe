@@ -19,7 +19,13 @@
 @font-face {
   font-family: "WoodCarving";
   src: local("Wood-Carving"),
-    url("./assets/Fonts/Wood\ Carving.ttf") format("truetype");
+    url("./assets/Fonts/Wood Carving.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Bones";
+  src: local("Cartoon-Bones"),
+    url("./assets/Fonts/Cartoon Bones.ttf") format("truetype");
 }
 
 body {

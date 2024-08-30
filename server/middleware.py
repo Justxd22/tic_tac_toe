@@ -17,7 +17,8 @@ def auth_middleware(app):
             url_for('auth.login'),
             url_for('web_dynamic.ttt_ai'),
             url_for('web_dynamic.tictactoe'),
-            url_for('web_dynamic.home')
+            url_for('web_dynamic.home'),
+            url_for('web_dynamic.status'),
             ]
 
         # Check if the user is logged in
