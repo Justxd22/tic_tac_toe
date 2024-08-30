@@ -53,6 +53,7 @@ class User:
         return new_username
 
     def update_email(self, username, new_email):
+        '''Updates the email of the given user'''
         # Check if new_email is valid
         if not self.email_regex.match(new_email):
             raise ValueError("Invalid email address.")
