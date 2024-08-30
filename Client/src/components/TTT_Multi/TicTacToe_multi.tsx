@@ -214,7 +214,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     setGameState(GAME_STATES.notStarted);
     setGrid(arr);
     setModalOpen(false);
-  
+
     if (socket) {
       socket.emit("join_queue");
       console.log("Rejoining queue...");
@@ -284,7 +284,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     <>
       {userInfo ? (
         <div className="flex justify-center items-center w-screen">
-          <div className="absolute top-[2%] w-[35%] md:w-[70%] py-4 px-10 text-center grid grid-cols-2 gap-4 items-center justify-around bg-slate-700 rounded-md">
+          <div className="absolute top-[2%] sm:w-[70%] md:w-[35%] py-4 px-10 text-center bg-opacity-25 rounded-full grid grid-cols-2 gap-4 items-center justify-around bg-slate-700 rounded-md">
             <p className="font-bold text-white text-xl">
               Games Played: {userInfo.game_played}
             </p>
@@ -338,7 +338,7 @@ const Container = styled.div<{ dims: number }>`
   width: ${({ dims }) => `${dims * (SQUARE_DIMS + 5)}px`};
   flex-flow: wrap;
   position: relative;
-  font-family: "WoodCarving", sans-serif;
+  font-family: "ArtNouveauCaps", sans-serif;
   font-weight: bold;
   color: white;
   background-image: url(${boardImage});
