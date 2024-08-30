@@ -62,7 +62,7 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     const fetchUserProfile = async () => {
       try {
         const response = await fetch(
-          "https://tictactoe-production-f0a0.up.railway.app/api/user/profile",
+          "/api/user/profile",
           {
             method: "GET",
             headers: {
@@ -199,7 +199,7 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     <>
       <div className="w-[10rem]">
         {userInfo ? (
-          <div className="absolute top-[2%] right-[3%] w-[70%] py-4 px-10 grid grid-cols-2 gap-4 items-center justify-between bg-slate-700 rounded-md">
+          <div className="absolute top-[2%] right-[15%] w-[70%] py-4 px-10 grid grid-cols-2 gap-4 items-center justify-between bg-slate-700 rounded-md">
             <p className="font-bold text-white text-xl">
               Games Played: {userInfo.game_played}
             </p>
