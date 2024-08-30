@@ -32,18 +32,23 @@ def create_app():
         PERMANENT_SESSION_LIFETIME=timedelta(minutes=30),  # Set session lifetime
     )
 
+    # CORS(
+    #     app,
+    #     resources={
+    #         r"/*":
+    #             {
+    #                 "origins": app.config["CORS_CONFIG"]["CORS_ORIGINS"],
+    #                 "methods": app.config["CORS_CONFIG"]["CORS_METHODS"],
+    #                 }
+    #             },
+    #     supports_credentials=app.config["CORS_SUPPORTS_CREDENTIALS"].lower() == 'true',
+    #     )
+ # Allow all origins and all methods
     CORS(
         app,
-        resources={
-            r"/*":
-                {
-                    "origins": app.config["CORS_CONFIG"]["CORS_ORIGINS"],
-                    "methods": app.config["CORS_CONFIG"]["CORS_METHODS"],
-                    }
-                },
+        resources={r"/*": {"origins": "*", "methods": "*"}},
         supports_credentials=app.config["CORS_SUPPORTS_CREDENTIALS"].lower() == 'true',
-        )
-
+    )
     app.config['SESSION_TYPE'] = 'filesystem'
     Session(app)
 
