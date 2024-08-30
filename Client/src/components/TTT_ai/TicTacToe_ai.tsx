@@ -17,6 +17,7 @@ import { ResultModal } from "./ResultModal";
 import { border } from "./styles";
 import gameOverSoundAsset from "../../assets/sounds/game_over.wav";
 import clickSoundAsset from "../../assets/sounds/click.wav";
+import boardImage from '../../assets/Images/board.png';
 
 const gameOverSound = new Audio(gameOverSoundAsset);
 gameOverSound.volume = 0.2;
@@ -273,7 +274,7 @@ const Container = styled.div<{ dims: number }>`
   flex-flow: wrap;
   position: relative;
   color: white;
-  background-image: url("/src/assets/Images/board.png"); /* Add your image path here */
+  background-image: url(${boardImage});
   background-size: cover; /* Adjust based on your desired look */
   background-repeat: no-repeat;
   filter: brightness(0) invert(1);

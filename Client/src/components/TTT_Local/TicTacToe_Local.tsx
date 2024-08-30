@@ -16,6 +16,7 @@ import { ResultModal } from "./ResultModal";
 import { border } from "./styles";
 import gameOverSoundAsset from "../../assets/sounds/game_over.wav";
 import clickSoundAsset from "../../assets/sounds/click.wav";
+import boardImage from '../../assets/Images/board.png';
 import PulsatingButton from "../ui/pulsating-button";
 
 const gameOverSound = new Audio(gameOverSoundAsset);
@@ -94,7 +95,8 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     if (!grid[index] && nextMove === players.human) {
       move(index, players.human);
       setNextMove(players.ai);
-    } else {
+    } 
+    else if(!grid[index]) {
       move(index, players.ai);
       setNextMove(players.human);
     }
@@ -179,7 +181,7 @@ const Container = styled.div<{ dims: number }>`
   position: relative;
   font-family: "Aberus", sans-serif; /* Apply the font here */
   color: white;
-  background-image: url("src/assets/Images/board.png"); /* Add your image path here */
+  background-image: url(${boardImage});
   background-size: cover; /* Adjust based on your desired look */
   background-repeat: no-repeat;
   filter: brightness(0) invert(1);
