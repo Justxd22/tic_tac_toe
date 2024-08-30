@@ -32,6 +32,7 @@ class User:
         self.users.update_one({'username': username}, {'$inc': {'losses': 1, 'game_played': 1}})
 
     def increment_draws(self, username):
+        '''Increments the draws of the given username by one.'''
         self.users.update_one({'username': username}, {'$inc': {'draws': 1, 'game_played': 1}})
         self._update_score(username, 1)
 
