@@ -4,6 +4,7 @@ from models.auth import Auth
 
 class User:
     def __init__(self, db):
+        '''Initialize a User instance'''
         self.db = db
         self.users = self.db['users']
 
