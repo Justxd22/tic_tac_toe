@@ -6,6 +6,11 @@
 
 - LIVE URL
 
+## Screenshots
+![s1](.assets/s1.png)
+![s2](.assets/s2.png)
+![s3](.assets/s3.png)
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
