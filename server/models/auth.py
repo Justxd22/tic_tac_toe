@@ -62,6 +62,7 @@ class Auth:
 
 
     def deregister_user(self, username: str):
+        '''De-registers a the user with the given username'''
         result = self.users.delete_one({'username': username})
         if result.deleted_count == 1:
             return f"User {username} has been deregistered successfully."
