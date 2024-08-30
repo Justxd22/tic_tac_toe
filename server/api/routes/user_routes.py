@@ -72,6 +72,61 @@ def update_password():
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
 
+
+@user_bp.route("/update_wins", methods=["POST"])
+def update_wins():
+    """Update wins."""
+    if 'username' not in session:
+        return jsonify({"message": "Not logged in"}), 400
+
+    data = request.get_json(silent=True)
+    if data is None:
+        return jsonify({"message": "missing parameters"}), 400
+    
+    username = session.get('username')
+    try:
+        USER.increment_wins(username)
+        return jsonify({"message": "wins updated"})
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
+
+
+@user_bp.route("/update_losses", methods=["POST"])
+def update_wins():
+    """Update losses."""
+    if 'username' not in session:
+        return jsonify({"message": "Not logged in"}), 400
+
+    data = request.get_json(silent=True)
+    if data is None:
+        return jsonify({"message": "missing parameters"}), 400
+    
+    username = session.get('username')
+    try:
+        USER.increment_losses(username)
+        return jsonify({"message": "losses updated"})
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
+    
+
+@user_bp.route("/update_draws", methods=["POST"])
+def update_wins():
+    """Update draws."""
+    if 'username' not in session:
+        return jsonify({"message": "Not logged in"}), 400
+
+    data = request.get_json(silent=True)
+    if data is None:
+        return jsonify({"message": "missing parameters"}), 400
+    
+    username = session.get('username')
+    try:
+        USER.increment_draws(username)
+        return jsonify({"message": "draws updated"})
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
+
+
 # @user_bp.route("/user_avatar", methods=["PUT"])
 # def update_user_avatar():
 #     """Update user avatar, by uploading its image to the server."""
