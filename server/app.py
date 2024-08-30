@@ -28,27 +28,28 @@ def create_app():
     app.config.update(
         SESSION_COOKIE_SECURE=False,  # Ensure cookies are only sent over HTTPS
         SESSION_COOKIE_HTTPONLY=True,  # Prevent JavaScript access to session cookie
-        SESSION_COOKIE_SAMESITE=app.config["SAMESITE_POLICY"],  # Restrict cookie sending for cross-site requests
+        # SESSION_COOKIE_SAMESITE=app.config["SAMESITE_POLICY"],  # Restrict cookie sending for cross-site requests
+        SESSION_COOKIE_SAMESITE='Lax',  # Restrict cookie sending for cross-site requests
         PERMANENT_SESSION_LIFETIME=timedelta(minutes=30),  # Set session lifetime
     )
 
-    # CORS(
-    #     app,
-    #     resources={
-    #         r"/*":
-    #             {
-    #                 "origins": app.config["CORS_CONFIG"]["CORS_ORIGINS"],
-    #                 "methods": app.config["CORS_CONFIG"]["CORS_METHODS"],
-    #                 }
-    #             },
-    #     supports_credentials=app.config["CORS_SUPPORTS_CREDENTIALS"].lower() == 'true',
-    #     )
- # Allow all origins and all methods
     CORS(
         app,
-        resources={r"/*": {"origins": "*", "methods": "*"}},
+        resources={
+            r"/*":
+                {
+                    "origins": app.config["CORS_CONFIG"]["CORS_ORIGINS"],
+                    "methods": app.config["CORS_CONFIG"]["CORS_METHODS"],
+                    }
+                },
         supports_credentials=app.config["CORS_SUPPORTS_CREDENTIALS"].lower() == 'true',
-    )
+        )
+ # Allow all origins and all methods
+    # CORS(
+    #     app,
+    #     resources={r"/*": {"origins": "*", "methods": "*"}},
+    #     supports_credentials=app.config["CORS_SUPPORTS_CREDENTIALS"].lower() == 'true',
+    # )
     app.config['SESSION_TYPE'] = 'filesystem'
     Session(app)
 
