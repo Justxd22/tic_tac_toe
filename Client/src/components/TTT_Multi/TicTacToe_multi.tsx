@@ -11,7 +11,6 @@ import {
   DIMENSIONS,
 } from "./constants";
 import Board from "./Board";
-import { switchPlayer } from "./utils";
 import { ResultModal } from "./ResultModal";
 import { border } from "./styles";
 import gameOverSoundAsset from "../../assets/sounds/game_over.wav";
