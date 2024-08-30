@@ -298,19 +298,6 @@ const Marker = styled.p`
   font-size: 68px;
 `;
 
-const ButtonRow = styled.div`
-  display: flex;
-  width: 150px;
-  justify-content: space-between;
-`;
-
-const Inner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 30px;
-`;
-
 const Strikethrough = styled.div<{ styles: string | null }>`
   position: absolute;
   ${({ styles }) => styles}
