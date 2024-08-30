@@ -16,6 +16,7 @@ import { ResultModal } from "./ResultModal";
 import { border } from "./styles";
 import gameOverSoundAsset from "../../assets/sounds/game_over.wav";
 import clickSoundAsset from "../../assets/sounds/click.wav";
+import PulsatingButton from "../ui/pulsating-button";
 
 const gameOverSound = new Audio(gameOverSoundAsset);
 gameOverSound.volume = 0.2;
@@ -93,7 +94,7 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     if (!grid[index] && nextMove === players.human) {
       move(index, players.human);
       setNextMove(players.ai);
-    }else{
+    } else {
       move(index, players.ai);
       setNextMove(players.human);
     }
@@ -111,13 +112,12 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     setModalOpen(false);
   };
 
-
   useEffect(() => {
     if (nextMove !== null) {
       clickSound.play();
     }
   }, [nextMove]);
-  
+
   useEffect(() => {
     if (gameState !== GAME_STATES.inProgress) {
       gameOverSound.play();
@@ -126,17 +126,20 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
 
   const handleClose = () => {
     setModalOpen(false);
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   const startGame = () => {
-    choosePlayer(1)
-    
-  }
+    choosePlayer(1);
+  };
 
   return gameState === GAME_STATES.notStarted ? (
     <div>
-      <button onClick={startGame}>Start</button>
+      <PulsatingButton 
+      children="Start"
+      onClick={startGame}
+      className="font-bold transform transition-transform duration-300 hover:scale-105 hover:bg-gray-200"
+      />
     </div>
   ) : (
     <Container dims={DIMENSIONS}>

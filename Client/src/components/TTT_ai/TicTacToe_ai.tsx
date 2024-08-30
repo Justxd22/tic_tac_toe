@@ -179,7 +179,7 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
       clickSound.play();
     }
   }, [nextMove]);
-  
+
   useEffect(() => {
     if (gameState !== GAME_STATES.inProgress) {
       gameOverSound.play();
@@ -188,32 +188,53 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
 
   const handleClose = () => {
     setModalOpen(false);
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   return gameState === GAME_STATES.notStarted ? (
-    <div>
-      <Inner>
-        <p>Select difficulty</p>
-        <select onChange={changeMode} value={mode}>
-          {Object.keys(GAME_MODES).map((key) => {
-            const gameMode = GAME_MODES[key];
-            return (
-              <option key={gameMode} value={gameMode}>
-                {key}
-              </option>
-            );
-          })}
-        </select>
-      </Inner>
-      <Inner>
-        <p>Choose your player</p>
-        <ButtonRow>
-          <button onClick={() => choosePlayer(PLAYER_X)}>X</button>
-          <p>or</p>
-          <button onClick={() => choosePlayer(PLAYER_O)}>O</button>
-        </ButtonRow>
-      </Inner>
+    <div className="text-white font-newrocker">
+      <div className="space-y-4">
+        <div>
+          <p className="mb-2">Select difficulty</p>
+          <select
+            onChange={changeMode}
+            value={mode}
+            className="bg-gray-800 text-white border border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {Object.keys(GAME_MODES).map((key) => {
+              const gameMode = GAME_MODES[key];
+              return (
+                <option
+                  key={gameMode}
+                  value={gameMode}
+                  className="bg-gray-800 text-white"
+                >
+                  {key}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+
+        <div>
+          <p className="mb-2">Choose your player</p>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => choosePlayer(PLAYER_X)}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              X
+            </button>
+            <p>or</p>
+            <button
+              onClick={() => choosePlayer(PLAYER_O)}
+              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              O
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   ) : (
     <Container dims={DIMENSIONS}>
@@ -252,7 +273,7 @@ const Container = styled.div<{ dims: number }>`
   flex-flow: wrap;
   position: relative;
   color: white;
-  background-image: url('/src/assets/Images/board.png'); /* Add your image path here */
+  background-image: url("/src/assets/Images/board.png"); /* Add your image path here */
   background-size: cover; /* Adjust based on your desired look */
   background-repeat: no-repeat;
   filter: brightness(0) invert(1);
@@ -276,19 +297,6 @@ Square.displayName = "Square";
 
 const Marker = styled.p`
   font-size: 68px;
-`;
-
-const ButtonRow = styled.div`
-  display: flex;
-  width: 150px;
-  justify-content: space-between;
-`;
-
-const Inner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 30px;
 `;
 
 const Strikethrough = styled.div<{ styles: string | null }>`

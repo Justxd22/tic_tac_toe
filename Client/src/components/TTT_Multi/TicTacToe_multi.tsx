@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import io from 'socket.io-client';
+import io from "socket.io-client";
 import styled from "styled-components";
 import {
   PLAYER_X,
@@ -53,26 +53,26 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [gameid, setGameid] = useState<string | null>(null);
 
   useEffect(() => {
-    const newSocket = io('http://127.0.0.1:3000', {
+    const newSocket = io("http://127.0.0.1:3000", {
       withCredentials: true, // Required for cross-origin socket events
     });
 
     setSocket(newSocket);
 
-    newSocket.on('connect', () => {
-      console.log('Socket connection established.');
-      console.log('Socket ID:', newSocket.id); // Now socket.id should be defined
+    newSocket.on("connect", () => {
+      console.log("Socket connection established.");
+      console.log("Socket ID:", newSocket.id); // Now socket.id should be defined
     });
-    console.log('Socket connection established.'); // printed twice use effect is fucked lamo fix it
+    console.log("Socket connection established."); // printed twice use effect is fucked lamo fix it
     return () => {
-        newSocket.close();
+      newSocket.close();
     };
   }, []);
 
   useEffect(() => {
     if (socket) {
-      socket.emit('join_queue');
-      console.log('joined queue waiting.....');
+      socket.emit("join_queue");
+      console.log("joined queue waiting.....");
       console.log(socket.id);
 
       // socket.on('game_id', (data) => {
@@ -80,30 +80,29 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
       //   setGameid(data);
       // });
 
-      socket.on('start_game', (data: GameData) => {
-        console.log('Starting game.....', data);
+      socket.on("start_game", (data: GameData) => {
+        console.log("Starting game.....", data);
         setPlayers({ human: data.player, ai: data.player === 1 ? 2 : 1 });
         setGameState(GAME_STATES.inProgress);
-        console.log('STATTEEEEEE', gameState, GAME_STATES.inProgress); // see this line in console i set it to started but it's not started lol
+        console.log("STATTEEEEEE", gameState, GAME_STATES.inProgress); // see this line in console i set it to started but it's not started lol
         setNextMove(PLAYER_X);
         setGameid(data.game_id);
       });
 
-      socket.on('move', (msg: MoveMessage) => {
-        console.log('SOCKET', msg.index, msg, msg.player === 1 ? 2 : 1);
+      socket.on("move", (msg: MoveMessage) => {
+        console.log("SOCKET", msg.index, msg, msg.player === 1 ? 2 : 1);
         move(msg.index, msg.player);
         setNextMove(msg.player === 1 ? 2 : 1);
       });
 
-      console.log('Event listeners set up.');
+      console.log("Event listeners set up.");
 
       return () => {
-        socket.off('start_game');
-        socket.off('move');
+        socket.off("start_game");
+        socket.off("move");
       };
     }
   }, [socket]);
-
 
   /**
    * On every move, check if there is a winner. If yes, set game state to over and open result modal
@@ -143,9 +142,10 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
    */
   const move = useCallback(
     (index: number, player: number | null) => {
-      console.log('MOVE',index, player, gameState);
-      if (player !== null || gameState === GAME_STATES.inProgress) { // changed to or to disable states check
-        console.log('MOVE_VALIDDDDD',index, player);
+      console.log("MOVE", index, player, gameState);
+      if (player !== null || gameState === GAME_STATES.inProgress) {
+        // changed to or to disable states check
+        console.log("MOVE_VALIDDDDD", index, player);
         setGrid((grid) => {
           const gridCopy = grid.concat();
           gridCopy[index] = player;
@@ -196,16 +196,15 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     if (!grid[index] && nextMove === players.human) {
       move(index, players.human);
       setNextMove(players.ai);
-      console.log('HUMAN', index); // SEND TO SOCKETS // 1 is X,  0 is O
+      console.log("HUMAN", index); // SEND TO SOCKETS // 1 is X,  0 is O
       const data = {
         player: players.human,
         index: index,
         game_id: gameid,
       };
       if (socket) {
-        socket.emit('humanMove', data);
+        socket.emit("humanMove", data);
       }
-
     }
   };
 
@@ -221,13 +220,12 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     setModalOpen(false);
   };
 
-
   useEffect(() => {
     if (nextMove !== null) {
       clickSound.play();
     }
   }, [nextMove]);
-  
+
   useEffect(() => {
     if (gameState !== GAME_STATES.inProgress) {
       gameOverSound.play();
@@ -236,19 +234,31 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
 
   const handleClose = () => {
     setModalOpen(false);
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   return gameState === GAME_STATES.notStarted ? (
-    <div>
-      <Inner>
-        <p>Choose your player</p>
-        <ButtonRow>
-          <button onClick={() => choosePlayer(PLAYER_X)}>X</button>
-          <p>or</p>
-          <button onClick={() => choosePlayer(PLAYER_O)}>O</button>
-        </ButtonRow>
-      </Inner>
+    <div className="text-white font-newrocker">
+      <div className="space-y-4">
+        <div>
+          <p className="mb-2 text-lg font-semibold">Choose your player</p>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => choosePlayer(PLAYER_X)}
+              className="bg-blue-500 text-white px-6 py-2 rounded-md font-bold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              X
+            </button>
+            <p className="text-lg font-semibold">or</p>
+            <button
+              onClick={() => choosePlayer(PLAYER_O)}
+              className="bg-red-500 text-white px-6 py-2 rounded-md font-bold hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              O
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   ) : (
     <Container dims={DIMENSIONS}>
@@ -305,19 +315,6 @@ Square.displayName = "Square";
 
 const Marker = styled.p`
   font-size: 68px;
-`;
-
-const ButtonRow = styled.div`
-  display: flex;
-  width: 150px;
-  justify-content: space-between;
-`;
-
-const Inner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 30px;
 `;
 
 const Strikethrough = styled.div<{ styles: string | null }>`
