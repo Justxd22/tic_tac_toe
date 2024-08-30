@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -8,7 +8,7 @@ import {
   DRAW,
   GAME_STATES,
   DIMENSIONS,
-  GAME_MODES,
+  // GAME_MODES,
 } from "./constants";
 import Board from "./Board";
 import { switchPlayer } from "./utils";
@@ -175,7 +175,7 @@ const Container = styled.div<{ dims: number }>`
   flex-flow: wrap;
   position: relative;
   color: white;
-  background-image: url('/src/assets/Images/board.png'); /* Add your image path here */
+  background-image: url('assets/board.png'); /* Add your image path here */
   background-size: cover; /* Adjust based on your desired look */
   background-repeat: no-repeat;
   filter: brightness(0) invert(1);

@@ -26,6 +26,7 @@ games = {}
 def join_queue():
     username = session.get('username', None)
     if not username:
+        print("NO SESSION\n\n")
         return None
     print('session', username, games, waiting_players)
     if username not in waiting_players:

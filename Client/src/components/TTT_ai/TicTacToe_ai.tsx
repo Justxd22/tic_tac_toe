@@ -136,6 +136,7 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
    * Make AI move when it's AI's turn
    */
   useEffect(() => {
+    // @ts-ignore
     let timeout: NodeJS.Timeout;
     if (
       nextMove !== null &&
