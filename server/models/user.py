@@ -14,6 +14,13 @@ class User:
 
 
     def _update_score(self, username, score):
+        '''Updates the score of the given user.
+        Args:
+            username (string): the user name
+            score (number): their score
+        Returns:
+            Nothing
+        '''
         self.users.update_one({'username': username}, {'$inc': {'score': score}})
 
     def increment_wins(self, username):
