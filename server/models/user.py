@@ -67,6 +67,7 @@ class User:
         return new_email
 
     def update_avatar(self, username, new_avatar):
+        '''Updates the avatar of the given username'''
         self.users.update_one({'username': username}, {'$set': {'avatar': new_avatar}})
 
     def delete_avatar(self, username):
