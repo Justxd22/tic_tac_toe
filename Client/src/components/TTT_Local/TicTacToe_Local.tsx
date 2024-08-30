@@ -197,25 +197,21 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     </div>
   ) : (
     <>
-      <div className="w-[10rem]">
-        {userInfo ? (
-          <div className="absolute top-[2%] right-[3%] w-[70%] py-4 px-10 grid grid-cols-2 gap-4 items-center justify-between bg-slate-700 rounded-md">
+      <div className="flex justify-center items-center w-screen">
+          <div className="absolute top-[2%] w-[35%] py-4 px-10 text-center grid grid-cols-2 gap-4 bg-opacity-40 items-center justify-around bg-slate-700 rounded-md">
             <p className="font-bold text-white text-xl">
-              Games Played: {userInfo.game_played}
+              Games <br /> Played: 0
             </p>
             <p className="font-bold text-white text-xl">
-              Wins: {userInfo.wins}
+              Wins: 0
             </p>
             <p className="font-bold text-white text-xl">
-              Losses: {userInfo.losses}
+              Losses: 0
             </p>
             <p className="font-bold text-white text-xl">
-              Draws: {userInfo.draws}
+              Draws: 0
             </p>
           </div>
-        ) : (
-          <p>Loading user information...</p>
-        )}
       </div>
       <Container dims={DIMENSIONS}>
         {grid.map((value, index) => {
