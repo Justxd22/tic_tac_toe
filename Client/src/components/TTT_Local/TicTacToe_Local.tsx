@@ -16,8 +16,20 @@ import { ResultModal } from "./ResultModal";
 import { border } from "./styles";
 import gameOverSoundAsset from "../../assets/sounds/game_over.wav";
 import clickSoundAsset from "../../assets/sounds/click.wav";
-import boardImage from '../../assets/Images/board.png';
+import boardImage from "../../assets/Images/board.png";
 import PulsatingButton from "../ui/pulsating-button";
+
+// Define the shape of userInfo based on your API response
+interface UserInfo {
+  game_played: number;
+  wins: number;
+  losses: number;
+  draws: number;
+  // Add other fields as necessary
+}
+
+// Define the type for error
+type ErrorType = string | null;
 
 const gameOverSound = new Audio(gameOverSoundAsset);
 gameOverSound.volume = 0.2;
@@ -41,6 +53,47 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
   const [winner, setWinner] = useState<string | null>(null);
   const [nextMove, setNextMove] = useState<null | number>(null);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [error, setError] = useState<ErrorType>(null);
+  console.log(error || "NO errors");
+  useEffect(() => {
+    // Fetch user profile when the component mounts
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch(
+          "https://tictactoe-production-f0a0.up.railway.app/api/user/profile",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              // Add other headers if needed, e.g., Authorization
+            },
+            credentials: "include", // Include credentials if your session management requires it
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        setUserInfo(data);
+        console.log(data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+          console.log(error.message);
+        } else {
+          setError("An unknown error occurred");
+          console.log("An unknown error occurred");
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   /**
    * On every move, check if there is a winner. If yes, set game state to over and open result modal
@@ -95,8 +148,7 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     if (!grid[index] && nextMove === players.human) {
       move(index, players.human);
       setNextMove(players.ai);
-    } 
-    else if(!grid[index]) {
+    } else if (!grid[index]) {
       move(index, players.ai);
       setNextMove(players.human);
     }
@@ -144,32 +196,54 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
       />
     </div>
   ) : (
-    <Container dims={DIMENSIONS}>
-      {grid.map((value, index) => {
-        const isActive = value !== null;
+    <>
+      <div>
+        {userInfo ? (
+          <>
+            <p className="font-bold text-white text-xl">
+              Games Played: {userInfo.game_played}
+            </p>
+            <p className="font-bold text-white text-xl">
+              Wins: {userInfo.wins}
+            </p>
+            <p className="font-bold text-white text-xl">
+              Losses: {userInfo.losses}
+            </p>
+            <p className="font-bold text-white text-xl">
+              Draws: {userInfo.draws}
+            </p>
+          </>
+        ) : (
+          <p>Loading user information...</p>
+        )}
+      </div>
+      <Container dims={DIMENSIONS}>
+        {grid.map((value, index) => {
+          const isActive = value !== null;
 
-        return (
-          <Square
-            data-testid={`square_${index}`}
-            key={index}
-            onClick={() => humanMove(index)}
-          >
-            {isActive && <Marker>{value === PLAYER_X ? "X" : "O"}</Marker>}
-          </Square>
-        );
-      })}
-      <Strikethrough
-        styles={
-          gameState === GAME_STATES.over ? board.getStrikethroughStyles() : ""
-        }
-      />
-      <ResultModal
-        isOpen={modalOpen}
-        winner={winner}
-        close={handleClose}
-        startNewGame={startNewGame}
-      />
-    </Container>
+          return (
+            <Square
+              data-testid={`square_${index}`}
+              key={index}
+              onClick={() => humanMove(index)}
+            >
+              {isActive && <Marker>{value === PLAYER_X ? "X" : "O"}</Marker>}
+            </Square>
+          );
+        })}
+        <Strikethrough
+          styles={
+            gameState === GAME_STATES.over ? board.getStrikethroughStyles() : ""
+          }
+        />
+        <ResultModal
+          isOpen={modalOpen}
+          winner={winner}
+          close={handleClose}
+          startNewGame={startNewGame}
+        />
+      </Container>
+    </>
   );
 };
 
