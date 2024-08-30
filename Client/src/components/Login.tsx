@@ -56,7 +56,7 @@ const Login: FC = () => {
 
   return (
     <>
-      <img src={Logo} alt="Logo" className="logo" />
+      <img src={Logo} alt="Logo" className="logo w-[60%] mt-20 md:mt-0 md:w-full" />
 
       <div className="wrapper">
         <form onSubmit={handleSubmit}>
