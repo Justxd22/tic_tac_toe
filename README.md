@@ -1,6 +1,6 @@
 # Tic-Tac-Toe Game (NOT yet completed)
 
-- LOGO
+![s1](.assets/logo.png)
 
 ## Live
 
