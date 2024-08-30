@@ -195,7 +195,7 @@ const TicTacToe_ai = ({ squares = arr }: Props) => {
   return gameState === GAME_STATES.notStarted ? (
     <div className="text-white font-newrocker">
       <div className="space-y-4">
-        <div>
+        <div className="justify-center text-center">
           <p className="mb-2">Select difficulty</p>
           <select
             onChange={changeMode}
