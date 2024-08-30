@@ -31,6 +31,7 @@ class Auth:
 
 
     def register_user(self, email: str, username: str, password: str):
+        '''Registers a user'''
         # Check if email and username are valid
         if not self.email_regex.match(email):
             raise ValueError("Invalid email address.")
