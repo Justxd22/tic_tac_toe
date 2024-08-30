@@ -60,7 +60,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [socket, setSocket] = useState<ReturnType<typeof io> | null>(null);
   const [gameid, setGameid] = useState<string | null>(null);
-
+  const [reset, setReset] = useState<boolean>(false)
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [error, setError] = useState<ErrorType>(null);
   console.log(error || "NO errors");
@@ -96,7 +96,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     };
 
     fetchUserProfile();
-  }, []);
+  }, [reset]);
 
   useEffect(() => {
     const newSocket = io("/", {
@@ -214,6 +214,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
     setGameState(GAME_STATES.notStarted);
     setGrid(arr);
     setModalOpen(false);
+    setReset(true);
 
     if (socket) {
       socket.emit("join_queue");
