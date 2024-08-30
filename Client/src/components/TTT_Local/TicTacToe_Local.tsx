@@ -179,7 +179,8 @@ const Container = styled.div<{ dims: number }>`
   width: ${({ dims }) => `${dims * (SQUARE_DIMS + 5)}px`};
   flex-flow: wrap;
   position: relative;
-  font-family: "Aberus", sans-serif; /* Apply the font here */
+  font-family: "WoodCarving", sans-serif; /* Apply the font here */
+  font-weight: bold;
   color: white;
   background-image: url(${boardImage});
   background-size: cover; /* Adjust based on your desired look */
