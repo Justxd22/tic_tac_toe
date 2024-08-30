@@ -16,7 +16,7 @@ import { ResultModal } from "./ResultModal";
 import { border } from "./styles";
 import gameOverSoundAsset from "../../assets/sounds/game_over.wav";
 import clickSoundAsset from "../../assets/sounds/click.wav";
-// import PulsatingButton from "../ui/pulsating-button";
+import PulsatingButton from "../ui/pulsating-button";
 
 const gameOverSound = new Audio(gameOverSoundAsset);
 gameOverSound.volume = 0.2;
@@ -135,13 +135,11 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
 
   return gameState === GAME_STATES.notStarted ? (
     <div>
-      <button
-        onClick={startGame}
-        className="bg-white py-2 px-8 rounded-3xl cursor-pointer flex justify-center items-center font-bold transform transition-transform duration-300 hover:scale-105 hover:bg-gray-200"
-      >
-        Start
-      </button>
-      {/* <PulsatingButton>Start</PulsatingButton> */}
+      <PulsatingButton 
+      children="Start"
+      onClick={startGame}
+      className="font-bold transform transition-transform duration-300 hover:scale-105 hover:bg-gray-200"
+      />
     </div>
   ) : (
     <Container dims={DIMENSIONS}>
