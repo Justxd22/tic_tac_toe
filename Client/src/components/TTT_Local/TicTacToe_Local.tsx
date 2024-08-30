@@ -94,7 +94,8 @@ const TicTacToe_Local = ({ squares = arr }: Props) => {
     if (!grid[index] && nextMove === players.human) {
       move(index, players.human);
       setNextMove(players.ai);
-    } else {
+    } 
+    else if(!grid[index]) {
       move(index, players.ai);
       setNextMove(players.human);
     }

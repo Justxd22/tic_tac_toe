@@ -88,6 +88,6 @@ const ModalFooter = styled.div`
   width: 100%;
 `;
 
-const Button = styled.button`
-  font-size: 16px;
-`;
+// const Button = styled.button`
+//   font-size: 16px;
+// `;
