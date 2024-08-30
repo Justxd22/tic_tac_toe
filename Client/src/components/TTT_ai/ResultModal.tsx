@@ -31,7 +31,7 @@ export const ResultModal = ({ isOpen, close, startNewGame, winner }: Props) => {
 
         <ModalFooter>
           <img src={closeGame} alt="close" onClick={close} className="w-16 cursor-pointer"/>
-          <img src={startOver} alt="start over" onClick={startNewGame} className="w-20 cursor-pointer"/>
+          <img src={startOver} alt="start over" onClick={startNewGame} className="w-24 h-18 cursor-pointer"/>
           {/* <Button onClick={close}>Close</Button>
           <Button onClick={startNewGame}>Start over</Button> */}
         </ModalFooter>
