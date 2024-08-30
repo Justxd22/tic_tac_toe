@@ -13,7 +13,7 @@ const Register: FC = () => {
 
     // Send the Register request to the backend
     try {
-      const response = await fetch('https://tic-tac-toe-3kak.onrender.com/api/auth/register', {
+      const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

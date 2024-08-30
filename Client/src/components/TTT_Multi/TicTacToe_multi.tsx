@@ -54,7 +54,7 @@ const TicTacToe_multi = ({ squares = arr }: Props) => {
   const [gameid, setGameid] = useState<string | null>(null);
 
   useEffect(() => {
-    const newSocket = io("https://tic-tac-toe-3kak.onrender.com", {
+    const newSocket = io("/", {
       withCredentials: true, // Required for cross-origin socket events
     });
 

@@ -11,7 +11,7 @@ const Login: FC = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://tic-tac-toe-3kak.onrender.com/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
