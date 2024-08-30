@@ -30,7 +30,7 @@ def create_app():
         SESSION_COOKIE_HTTPONLY=True,  # Prevent JavaScript access to session cookie
         # SESSION_COOKIE_SAMESITE=app.config["SAMESITE_POLICY"],  # Restrict cookie sending for cross-site requests
         SESSION_COOKIE_SAMESITE='Lax',  # Restrict cookie sending for cross-site requests
-        PERMANENT_SESSION_LIFETIME=timedelta(minutes=30),  # Set session lifetime
+        PERMANENT_SESSION_LIFETIME=timedelta(minutes=90),  # Set session lifetime
     )
 
     CORS(
