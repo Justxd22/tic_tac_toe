@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import Modal from "react-modal";
 import { border } from "./styles";
-
+import closeGame from '../../assets/Images/close xo.png'
+import startOver from '../../assets/Images/start xo.png'
+import pirate from '../../assets/Images/pirateHat.png'
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(0,0,0, 0.6)",
@@ -22,13 +24,16 @@ export const ResultModal = ({ isOpen, close, startNewGame, winner }: Props) => {
       style={customStyles}
       ariaHideApp={false}
     >
-      <ModalWrapper>
+      <ModalWrapper className="font-newrocker bg-slate-300">
         <ModalTitle>Game over</ModalTitle>
-        <ModalContent>{winner}</ModalContent>
+        <img src={pirate} alt="pirate" className="w-40"/>
+        <ModalContent className="text-green-700 text-3xl">{winner}</ModalContent>
 
         <ModalFooter>
-          <Button onClick={close}>Close</Button>
-          <Button onClick={startNewGame}>Start over</Button>
+          <img src={closeGame} alt="close" onClick={close} className="w-16 cursor-pointer"/>
+          <img src={startOver} alt="start over" onClick={startNewGame} className="w-20 cursor-pointer"/>
+          {/* <Button onClick={close}>Close</Button>
+          <Button onClick={startNewGame}>Start over</Button> */}
         </ModalFooter>
       </ModalWrapper>
     </StyledModal>
@@ -51,9 +56,10 @@ const StyledModal = styled(Modal)`
 const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  // background-color: #fff;
   max-height: 100%;
   height: 100%;
+  justify-content: space-between;
   align-items: center;
   backface-visibility: hidden;
   padding: 1.25rem;
@@ -70,7 +76,7 @@ const ModalTitle = styled.p`
 `;
 
 const ModalContent = styled.p`
-  flex: 1 1 auto;
+  // flex: 1 1 auto;
   text-align: center;
 `;
 ModalContent.displayName = "ModalContent";
