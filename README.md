@@ -1,4 +1,4 @@
-# Tic-Tac-Toe Game (NOT yet completed)
+# Tic-Tac-Toe Game
 
 ![s1](Client/src/assets/Images/Text_Logo.png)
 
